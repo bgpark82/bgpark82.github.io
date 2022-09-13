@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Tags - Beantech | 豆科技
+          20. Valid Parentheses - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/tags/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/13/20-Valid-Parentheses/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/header_img/tag-bg.png')
-            /*page*/
+            background-image: url('null')
+            /*post*/
         
     }
     
@@ -87,10 +87,16 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="site-heading">
-                        <h1>Tags</h1>
-                        <!--<hr class="small">-->
-                        <span class="subheading">Hey, this is Tags.</span>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>20. Valid Parentheses</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by bgpark on
+                            2022-09-13
+                        </span>
                     </div>
                 
 
@@ -193,79 +199,178 @@
 
 
     <!-- Main Content -->
-    <!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <!-- 标签云 -->
-            <div id='tag_cloud' class="tags">
-                
-                    <a href="#Hexo" title="Hexo" rel="1">Hexo</a>
-                
-                    <a href="#Blog" title="Blog" rel="1">Blog</a>
-                
-            </div>
+    <!-- Modify by Yu-Hsuan Yen -->
 
-            <!-- 标签列表 -->
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="Hexo">
-                    <span class="tag-text">Hexo</span>
-                </span>
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="conditions">Conditions</span></h2>
+<hr>
+<ul>
+<li>Open brackets must be closed by the same type of brackets.</li>
+<li>Open brackets must be closed in the correct order.</li>
+<li>Every close bracket has a corresponding open bracket of the same type.</li>
+</ul>
+<h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
+<hr>
+<p>Valid parentheses questions can be solve by using <strong>Stack</strong>. Store the pair of parenthese as key and value of the map which can have an advantages on time complexity (O(1)). Total time complexity is O(n) and space complexity is O(6)</p>
+<h2><span id="solution">Solution</span></h2>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">			<span class="comment">// store the parentheses</span></span><br><span class="line">      Map&lt;Character, Character&gt; sm = <span class="keyword">new</span> HashMap();</span><br><span class="line">      sm.put(<span class="string">'['</span>, <span class="string">']'</span>);</span><br><span class="line">      sm.put(<span class="string">'&#123;'</span>, <span class="string">'&#125;'</span>);</span><br><span class="line">      sm.put(<span class="string">'('</span>, <span class="string">')'</span>);</span><br><span class="line">      </span><br><span class="line">      Stack&lt;Character&gt; cs = <span class="keyword">new</span> Stack();</span><br><span class="line"></span><br><span class="line">			<span class="comment">// O(n)      </span></span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;            </span><br><span class="line">          <span class="keyword">char</span> c = s.charAt(i);</span><br><span class="line">          </span><br><span class="line">          <span class="keyword">if</span>(cs.isEmpty()) cs.push(c);</span><br><span class="line">          <span class="keyword">else</span> <span class="keyword">if</span>(!cs.isEmpty() &amp;&amp; sm.get(cs.peek()) != <span class="keyword">null</span> &amp;&amp; sm.get(cs.peek()) == c) cs.pop();</span><br><span class="line">          <span class="keyword">else</span> cs.push(c);</span><br><span class="line">      &#125;        </span><br><span class="line">      </span><br><span class="line">      <span class="keyword">return</span> cs.size() == <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
+<hr>
+<ol>
+<li><code>peek()</code> of stack can be useful when validate the value before poping.</li>
+<li>Store the pair of parentheses as key and value in map</li>
+</ol>
+
                 
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2017/03/18/hexo-theme-beantech/">
-                        <h2 class="post-title">
-                            [Hexo] Theme BeanTech
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                This is hexo theme Demo.
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
+
                 <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2022/09/13/424-Longest-Repeating-Character-Replacement/" data-toggle="tooltip" data-placement="top" title="424. Longest Repeating Character Replacement">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
                 
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
             </div>
             
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="Blog">
-                    <span class="tag-text">Blog</span>
-                </span>
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
                 
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2017/03/18/hexo-theme-beantech/">
-                        <h2 class="post-title">
-                            [Hexo] Theme BeanTech
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                This is hexo theme Demo.
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
                 <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">It Helps SEO</a></li>
+                    
+                </ul>
                 
             </div>
-            
-
-
         </div>
     </div>
-</div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/13/20-Valid-Parentheses/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/13/20-Valid-Parentheses/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
