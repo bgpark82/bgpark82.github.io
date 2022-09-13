@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          647. Palindromic Substrings - Beantech | 豆科技
+          424. Longest Repeating Character Replacement - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/11/647-Palindromic-Substrings/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/13/424-Longest-Repeating-Character-Replacement/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>647. Palindromic Substrings</h1>
+                        <h1>424. Longest Repeating Character Replacement</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-11
+                            2022-09-13
                         </span>
                     </div>
                 
@@ -215,22 +215,25 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>palindrome is the string can be read the same backward and forward</li>
+<li>return the longest same letters after switch with any other letters</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>Since palindrome is the string when it reads the same forward and backward. it can consist of either even or odd number of characters. <strong>So we have to treat it differently depending on size</strong>. For odd number of string, it can start from size one and for even number of string, it can start from size two. <strong>we need to expand the start index to left and last index to right</strong>.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ex) aabaa</span><br><span class="line"></span><br><span class="line">     i j</span><br><span class="line">-------------------------------------------------</span><br><span class="line">odd  <span class="number">0</span> <span class="number">0</span> → a  → -<span class="number">1</span> <span class="number">1</span> </span><br><span class="line">even <span class="number">0</span> <span class="number">1</span> → aa → -<span class="number">1</span> <span class="number">2</span></span><br><span class="line">-------------------------------------------------</span><br><span class="line">odd  <span class="number">1</span> <span class="number">1</span> → a  →  <span class="number">0</span> <span class="number">2</span> → aab</span><br><span class="line">even <span class="number">1</span> <span class="number">2</span> → ab </span><br><span class="line">-------------------------------------------------</span><br><span class="line">odd  <span class="number">2</span> <span class="number">2</span> → b  →  <span class="number">1</span> <span class="number">3</span> → aba → <span class="number">0</span> <span class="number">4</span> → aabaa</span><br><span class="line">even <span class="number">2</span> <span class="number">3</span> → ba →  <span class="number">1</span> <span class="number">4</span> → abaa</span><br><span class="line">-------------------------------------------------</span><br><span class="line">odd  <span class="number">3</span> <span class="number">3</span> → a  →  <span class="number">2</span> <span class="number">4</span> → baa</span><br><span class="line">even <span class="number">3</span> <span class="number">4</span> → ba</span><br><span class="line">-------------------------------------------------</span><br><span class="line">odd  <span class="number">4</span> <span class="number">4</span> → a</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ABABBA <span class="number">1</span></span><br><span class="line"></span><br><span class="line">find the possible sequence of letter to change?????</span><br><span class="line">A</span><br><span class="line">AB</span><br><span class="line">ABA -&gt; AAA</span><br><span class="line">ABAB -&gt; x : over two letters</span><br><span class="line">ABABBA -&gt; x : over two letters</span><br><span class="line"></span><br><span class="line">B</span><br><span class="line">B A -&gt; BB</span><br><span class="line">B AB -&gt; BBB</span><br><span class="line">B ABB -&gt; BBBB</span><br><span class="line">B ABBA -&gt; x</span><br><span class="line"></span><br><span class="line">find the number of letter to <span class="keyword">switch</span> is equals to k</span><br><span class="line">calculate length of the same letters</span><br></pre></td></tr></table></figure>
+<p>I think we can start with <strong>dynamic programing</strong>. If you find the patterns it looks like sub problem can return the length of the same. then when it merge the parent problem then check if the letter of root problem is the frequent letter in sub problem. for instance, if the letters in sub problem is BAB then B is frequent letter. it goes back to root problem and its letter is B then increase the length or return 0 if it’s not the same</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countSubstrings</span><span class="params">(String s)</span> </span>&#123;    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            expand(s, i, i); <span class="comment">// odd</span></span><br><span class="line">            expand(s, i, i+<span class="number">1</span>); <span class="comment">// even</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">expand</span><span class="params">(String s, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(i &gt;= <span class="number">0</span> &amp;&amp; j &lt; s.length() &amp;&amp; s.charAt(i) == s.charAt(j)) &#123;</span><br><span class="line">            count++; i--; j++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/252f3d33-fc19-4922-b198-c5c4801d0e1b/Untitled.png" alt="Untitled"></p>
+<p>we can use the <strong>Sliding Window</strong> instead of Brute Force and its time complexity will be O(n).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// length - frequent &lt;= k</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">characterReplacement</span><span class="params">(String s, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span>[] f = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">0</span>, mf = <span class="number">0</span>, l = <span class="number">0</span>, r = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(; r &lt; s.length(); r++) &#123;</span><br><span class="line">            f[s.charAt(r) - <span class="string">'A'</span>]++;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">int</span> length = r - l + <span class="number">1</span>; <span class="comment">// 0</span></span><br><span class="line">            mf = Math.max(mf, f[s.charAt(r)-<span class="string">'A'</span>]);  </span><br><span class="line">            </span><br><span class="line">            <span class="comment">// move left index if frequent is greater than k</span></span><br><span class="line">            <span class="keyword">if</span>(length - mf &gt; k) &#123;</span><br><span class="line">                f[s.charAt(l) - <span class="string">'A'</span>]--;</span><br><span class="line">                l++;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            max = Math.max(max, r - l + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Not to duplicate number of frequent letter. For instance, if the letter at index i = 0, j = 0 is ‘A’, it will point to the same letter but it will count 2 for letter ‘A’. <strong>we can only increase right index to track the number of letters</strong></p>
+<p>Valify the length of less frequent substring is less than k and increase the left index once. <strong>Because it will decrease total length of window which is always less than max value</strong>. So we don’t need to keep increasing and validating the size of window by for loop.</p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
-<li>Another way to solve <strong>Palindrome problem by expanding the start and last index</strong></li>
+<li>Time complexity of sliding window</li>
+<li><code>l</code> for left  index and <code>r</code> for right index</li>
+<li>I can only use one of index to check the value in array</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">expand(s, i, i); <span class="comment">// odd</span></span><br><span class="line">expand(s, i, i+<span class="number">1</span>); <span class="comment">// even</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">expand</span><span class="params">(String s, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// the same first and last letter within boundary and expand</span></span><br><span class="line">    <span class="keyword">while</span>(i &gt;= <span class="number">0</span> &amp;&amp; j &lt; s.length() &amp;&amp; s.charAt(i) == s.charAt(j)) &#123;</span><br><span class="line">        count++; i--; j++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -238,13 +241,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/13/424-Longest-Repeating-Character-Replacement/" data-toggle="tooltip" data-placement="top" title="424. Longest Repeating Character Replacement">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/11/1143-Longest-Common-Subsequence/" data-toggle="tooltip" data-placement="top" title="1143. Longest Common Subsequence">Next Post &rarr;</a>
+                            <a href="/2022/09/11/647-Palindromic-Substrings/" data-toggle="tooltip" data-placement="top" title="647. Palindromic Substrings">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -327,8 +326,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/11/647-Palindromic-Substrings/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/11/647-Palindromic-Substrings/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/13/424-Longest-Repeating-Character-Replacement/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/13/424-Longest-Repeating-Character-Replacement/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
