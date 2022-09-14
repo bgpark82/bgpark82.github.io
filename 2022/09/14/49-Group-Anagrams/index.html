@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          48. Rotate Image - Beantech | 豆科技
+          49. Group Anagrams - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/14/48-Rotate-Image/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/14/49-Group-Anagrams/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,7 +91,7 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>48. Rotate Image</h1>
+                        <h1>49. Group Anagrams</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
@@ -215,30 +215,21 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>rotate the image by 90 degree (clockwise)</li>
-<li>DO NOT allocate another 2D matrix and do the rotation.</li>
-<li>matrix has the same length of rows and colums</li>
+<li><strong>Anagram</strong> is the word can formed by rearranging the letters of another. typically using all the letters once (cinema → iceman)</li>
+<li>answer can be any order</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
+<p>we can start with Brute Force. We can go through the strings one by one but <strong>each string has to be store somewhere to compare to other string.</strong> we need to choose the right data structure. we have to find the <strong>anagram which has the same length of letter with the different order</strong>. so <strong>if anagram is sorted, it turn into the same word</strong>. Map is a good option in this case. its time complexity is O(1). so total timecomplexity will be O(m*n)</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span>[][] m)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = m.length - <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; r - l; i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> t = l, b = r;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">int</span> tmp = m[t][l+i];</span><br><span class="line">                m[t][l+i] = m[b-i][l];</span><br><span class="line">                m[b-i][l] = m[b][r-i];</span><br><span class="line">                m[b][r-i] = m[t+i][r];</span><br><span class="line">                m[t+i][r] = tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            l++; r--;    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6aed74aa-881d-4834-a98c-45d412a716cf/Untitled.png" alt="Untitled"></p>
-<p>range of left and right index is 0 to 3. The coordination to be replaced will be (0,0) (0,3) (3,3) (3,0) and (0, 1) (1, 3) (3, 2) (2, 0) in the next loop. in general form will be (0,0 + i ) (0 + i,3) (3,3 - i) (3 - i,0). the range of index i is 0 to 2 so we can reuse the left and right index</p>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7687e7f2-d272-4e68-9afc-f686d4d55363/Untitled.png" alt="Untitled"></p>
-<p>after processing most outer layer of the array, we will move on to the inner layer. <strong>To do this, we can increase left index and decrease right index</strong>.</p>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ab5a6c73-8cdf-47dd-b520-72a822c6aadf/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; groupAnagrams(String[] strs) &#123;</span><br><span class="line">        </span><br><span class="line">        Map&lt;String, List&lt;String&gt;&gt; m = <span class="keyword">new</span> HashMap();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; strs.length; i++) &#123;</span><br><span class="line">            <span class="keyword">char</span>[] c = strs[i].toCharArray(); </span><br><span class="line">            Arrays.sort(c);</span><br><span class="line">            String s = String.valueOf(c); </span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(!m.containsKey(s)) m.put(s, <span class="keyword">new</span> ArrayList());</span><br><span class="line">            m.get(s).add(strs[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList(m.values());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
-<li>it’s import to have a valid range for matrix problem</li>
+<li><strong>Anagram</strong> has the same size of characters but different order → <strong>sort</strong></li>
+<li><strong>Map</strong> can be a good option for <strong>anagram</strong> problem</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; r - l; i++) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    l++; r--;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>use the actual number at first</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; r - l; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> t = l, b = r;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> tmp = m[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">        m[<span class="number">0</span>][<span class="number">0</span>] = m[<span class="number">3</span>][<span class="number">0</span>];</span><br><span class="line">        m[<span class="number">3</span>][<span class="number">0</span>] = m[<span class="number">3</span>][<span class="number">3</span>];</span><br><span class="line">        m[<span class="number">3</span>][<span class="number">3</span>] = m[<span class="number">0</span>][<span class="number">3</span>];</span><br><span class="line">        m[<span class="number">0</span>][<span class="number">3</span>] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    l++; r--;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -246,13 +237,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/14/49-Group-Anagrams/" data-toggle="tooltip" data-placement="top" title="49. Group Anagrams">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/13/20-Valid-Parentheses/" data-toggle="tooltip" data-placement="top" title="20. Valid Parentheses">Next Post &rarr;</a>
+                            <a href="/2022/09/14/48-Rotate-Image/" data-toggle="tooltip" data-placement="top" title="48. Rotate Image">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -335,8 +322,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/14/48-Rotate-Image/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/14/48-Rotate-Image/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/14/49-Group-Anagrams/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/14/49-Group-Anagrams/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
