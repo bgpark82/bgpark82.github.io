@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          33. Search in Rotated Sorted Array - Beantech | 豆科技
+          153. Find Minimum in Rotated Sorted Array - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/09/33-Search-in-Rotated-Sorted-Array/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/17/153-Find-Minimum-in-Rotated-Sorted-Array/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>33. Search in Rotated Sorted Array</h1>
+                        <h1>153. Find Minimum in Rotated Sorted Array</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-09
+                            2022-09-17
                         </span>
                     </div>
                 
@@ -214,43 +214,28 @@
 
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
-<ol>
-<li>Time Complexity is O(logN)</li>
-<li><code>*nums*</code> is sorted in ascending order다</li>
-<li><code>*nums*</code> is with distinct values</li>
-</ol>
-<p>What we can get from conditions is that it is binary search question since it has to take only O(logN) to search the target value in array</p>
+<ul>
+<li>array was originally sorted by ascending order</li>
+<li>rotate array between 1 to n times</li>
+<li>array has unique element</li>
+<li>return the minimum element of this array</li>
+<li>algorithm has to run in O(logN)</li>
+</ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>to use the binary search algorithm, <strong>arrays need to be sorted</strong>. but the given nums is rotated at certain pivot index which means the sub array of nums is in ascneding order. so if we are able to find the pivot index, we could use the binary search algorithm to find the target value. but in the condition, the whole time complexity needs to be O(logN), we also have to use the binary search to find the pivot index value</p>
+<p>In array problem, if the algorithm has to run in O(logN), we can come up with Binary search initially. If the array supposed to be sorted in ascending order and rotate it to the right then sub arrays from pivot index has minimum value or <strong>just find minimum value with Binary search</strong>.</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/90b7b3e8-4ab2-4e1f-b740-cbf933601239/C4460C45-0244-485C-A8EA-9D400DCDF0BD.jpeg" alt="C4460C45-0244-485C-A8EA-9D400DCDF0BD.jpeg"></p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.length == <span class="number">0</span> || nums == <span class="keyword">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 1. find the pivot index with the binary search</span></span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = nums.length-<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[m] &gt; nums[r]) &#123; <span class="comment">// 1 &gt; 3  r = 2 -&gt; 0</span></span><br><span class="line">                l = m + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = m;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2. select the sub array which has target value and reset the left and right index of the sub array</span></span><br><span class="line">        <span class="keyword">int</span> s = l;</span><br><span class="line">        l = <span class="number">0</span>;</span><br><span class="line">        r = nums.length-<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(target &gt;= nums[s] &amp;&amp; target &lt;= nums[r]) &#123;</span><br><span class="line">            l = s;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            r = s;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 3. search the target index in sub array</span></span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[m] == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> m;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[m] &lt; target) &#123;</span><br><span class="line">                l = m + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = m - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMin</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = nums.length - <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[m] &gt; nums[r]) l = m + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> r = m;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums[r];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3caae118-0fcc-4c6d-b4ee-cbd7b492a97e/Untitled.png" alt="Untitled"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
-<li>
-<p>setting right index</p>
-</li>
-<li>
-<p>mid point in even length of array</p>
-<ul>
-<li>in java, <strong>the actual number will be truncated in <em><code>int</code></em> data type</strong></li>
-</ul>
- <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[1,2,3,4]</span><br><span class="line"></span><br><span class="line">int left = 0;</span><br><span class="line">int right = 3;</span><br><span class="line">int mid = left + (right - left) / 2;</span><br><span class="line">        = 0 + (3 - 0)/2</span><br><span class="line">        = 0 + 1.5</span><br><span class="line">        = 1</span><br></pre></td></tr></table></figure>
-</li>
+<li><strong>Choose the left or right index for answer</strong></li>
+<li><strong>One of the left or right index has to be the same as middle index in equals if statement</strong></li>
 </ol>
-<ol start="3">
-<li>
-<p>condition in while loop</p>
-<ul>
-<li>In binary search, condition in while loop has to be <code>*left ≤ right*</code>, <strong>if size of the array is one, then it happen to compare the same index</strong></li>
-<li><strong>The left and right index updated with +1 and -1</strong> in order to meet the <em><code>left ≤ right</code></em> condition. otherwise it will stuck in while loop at certain point in time. for instance left = 1, right = 1</li>
-<li>ex) array = [1], left = 0, right = 0 → when left &lt; right in while condition, it can’t go into the while loop since it does not meet the condition</li>
-</ul>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">    <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(nums[m] == target) &#123;</span><br><span class="line">        <span class="keyword">return</span> m;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[m] &lt; target) &#123;</span><br><span class="line">        l = m + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        r = m - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">    <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">		<span class="keyword">if</span>(nums[m] &lt;= nums[r]) r = m;   <span class="comment">// value at m and r is euqual, then r move to m</span></span><br><span class="line">    <span class="keyword">else</span> l = m + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -258,13 +243,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/10/39-Combination-Sum/" data-toggle="tooltip" data-placement="top" title="39. Combination Sum">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/02/9월-2일-새로운-컨텐츠/" data-toggle="tooltip" data-placement="top" title="9월 2일 새로운 컨텐츠">Next Post &rarr;</a>
+                            <a href="/2022/09/17/79-Word-Search/" data-toggle="tooltip" data-placement="top" title="79. Word Search">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -347,8 +328,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/09/33-Search-in-Rotated-Sorted-Array/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/09/33-Search-in-Rotated-Sorted-Array/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/17/153-Find-Minimum-in-Rotated-Sorted-Array/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/17/153-Find-Minimum-in-Rotated-Sorted-Array/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
