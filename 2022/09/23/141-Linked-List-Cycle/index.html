@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          268. Missing Number - Beantech | 豆科技
+          141. Linked List Cycle - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/22/268-Missing-Number/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/23/141-Linked-List-Cycle/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>268. Missing Number</h1>
+                        <h1>141. Linked List Cycle</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-22
+                            2022-09-23
                         </span>
                     </div>
                 
@@ -215,30 +215,48 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>array <code>nums</code> containing <code>n</code> distinct numbers in the range <code>[0, n]</code></li>
-<li>return <em>the only number in the range that is missing from the array.</em></li>
+<li>determine if the linked list has a cycle in it.</li>
+<li><code>pos</code> is used to denote the index of the node</li>
+<li><code>pos</code> is <code>-1</code> or a <strong>valid index</strong> in the linked-list.</li>
+<li>The number of the nodes in the list is in the range <code>[0, 10^4]</code>.</li>
+<li><code>10^5 &lt;= Node.val &lt;= 10^5</code></li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>we can create the cache array with size of nums.length + 1. iterate throught the integer array nums and increase the value of cache array at the value of nums as index. Time complexity will be O(n) and space complexity would be O(n)</p>
+<p>Each node in list has its own unique memory address. <strong>we can store them in HashSet and during the iteration if there is value in HashSet exist then we can return true</strong>. Time complexity is O(n) and space complexity is O(n)</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">missingNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[] t = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length + <span class="number">1</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            t[nums[i]]++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(t[i] == <span class="number">0</span>) <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5341df08-e709-4fed-99c0-b589b5b07ce1/Untitled.png" alt="Untitled"></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">missingNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= nums.length; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            sum -= nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>we can simply find the sum of 0 to n and take out the sum of the value of nums array</strong>. Time complexity is O(n) and space complexity is O(1). below code is the simplified form of above code</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">missingNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = nums.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            sum += i - nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/60f46f39-d0bd-4a3f-93a8-af0387677a12/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        </span><br><span class="line">        Set&lt;ListNode&gt; s = <span class="keyword">new</span> HashSet();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(head.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(s.contains(head)) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            s.add(head);</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/21a3df08-f29d-4f0a-ad7f-7fc58ba80a3f/Untitled.png" alt="Untitled"></p>
+<p>is there any way lower than space complexity O(n)?</p>
+<p>If we use the <strong>tortoise and hare algorithm then time complexity is O(n) and space complexity is O(1)</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        ListNode slow = head, fast = head;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="keyword">null</span> &amp;&amp; fast.next != <span class="keyword">null</span>) &#123; <span class="comment">// fast pointer reach to the last node quicker than slow pointer</span></span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(slow == fast) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5bd3c9f7-ec04-4ead-91bc-9898ac1c6d72/Untitled.png" alt="Untitled"></p>
+<p>fast pointer reach to the last node quicker than slow pointer. <strong>so we can check the loop condition at the fast node</strong></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
 <li>
-<p>calculate sum of array and take out helps sometimes</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">    sum -= nums[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare" target="_blank" rel="noopener">Floyd’s tortoise and hare algorithm</a></p>
+<ul>
+<li>pointer algorithm that uses only two pointers</li>
+<li>move through the sequence at different speeds</li>
+<li><strong>if slow pointer and fast pointer meet, then it’s cylce!</strong></li>
+<li>but what if cycle is long enough??</li>
+<li>it’s always O(n)
+<ul>
+<li>every iteration distance between slow and fast pointer decrease 1 at a time!</li>
+<li>if the entire length of list is n then the maximum gap between two pointer would be n, it ended up meeting two pointers after O(n) time</li>
+<li>so total time complexity is O(2n) which is equals to O(n)</li>
+</ul>
 </li>
-</ol>
-<ol start="2">
-<li>we can use math to reduce the space complexity</li>
+<li>fast node always reach the last node earlier than slow node. so <strong>check the last node with fast pointer</strong></li>
+</ul>
+</li>
+<li>
+<p>Don’t compare value of node, <strong>compare address of node!</strong></p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Node&gt; s</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 
                 
@@ -247,13 +265,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/22/test/" data-toggle="tooltip" data-placement="top" title="test">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/21/200-Number-of-Islands/" data-toggle="tooltip" data-placement="top" title="200. Number of Islands">Next Post &rarr;</a>
+                            <a href="/2022/09/22/test/" data-toggle="tooltip" data-placement="top" title="test">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -336,8 +350,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/22/268-Missing-Number/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/22/268-Missing-Number/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/23/141-Linked-List-Cycle/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/23/141-Linked-List-Cycle/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
