@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          424. Longest Repeating Character Replacement - Beantech | 豆科技
+          449. Serialize and Deserialize BST - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/13/424-Longest-Repeating-Character-Replacement/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/24/449-Serialize-and-Deserialize-BST/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>424. Longest Repeating Character Replacement</h1>
+                        <h1>449. Serialize and Deserialize BST</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-13
+                            2022-09-24
                         </span>
                     </div>
                 
@@ -215,24 +215,42 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>return the longest same letters after switch with any other letters</li>
+<li>Design an algorithm to serialize and deserialize a <strong>binary search tree</strong></li>
+<li>binary search tree can be serialized to a string</li>
+<li>this string can be deserialized to the original tree structure</li>
+<li><strong>The encoded string should be as compact as possible.</strong></li>
+<li>• The input tree is <strong>guaranteed</strong> to be a binary search tree.</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ABABBA <span class="number">1</span></span><br><span class="line"></span><br><span class="line">find the possible sequence of letter to change?????</span><br><span class="line">A</span><br><span class="line">AB</span><br><span class="line">ABA -&gt; AAA</span><br><span class="line">ABAB -&gt; x : over two letters</span><br><span class="line">ABABBA -&gt; x : over two letters</span><br><span class="line"></span><br><span class="line">B</span><br><span class="line">B A -&gt; BB</span><br><span class="line">B AB -&gt; BBB</span><br><span class="line">B ABB -&gt; BBBB</span><br><span class="line">B ABBA -&gt; x</span><br><span class="line"></span><br><span class="line">find the number of letter to <span class="keyword">switch</span> is equals to k</span><br><span class="line">calculate length of the same letters</span><br></pre></td></tr></table></figure>
-<p>I think we can start with <strong>dynamic programing</strong>. If you find the patterns it looks like sub problem can return the length of the same. then when it merge the parent problem then check if the letter of root problem is the frequent letter in sub problem. for instance, if the letters in sub problem is BAB then B is frequent letter. it goes back to root problem and its letter is B then increase the length or return 0 if it’s not the same</p>
+<p>we need to keep the <strong>preorder of BST</strong> while serializing. so if input is [2,1,3] which is in preorder, we can keep this order in the string in output. it makes easier to deserialize. Time complexity of serialization and deserialization is O(n)</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<p>we can use the <strong>Sliding Window</strong> instead of Brute Force and its time complexity will be O(n).</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// length - frequent &lt;= k</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">characterReplacement</span><span class="params">(String s, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span>[] f = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">0</span>, mf = <span class="number">0</span>, l = <span class="number">0</span>, r = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(; r &lt; s.length(); r++) &#123;</span><br><span class="line">            f[s.charAt(r) - <span class="string">'A'</span>]++;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">int</span> length = r - l + <span class="number">1</span>; <span class="comment">// 0</span></span><br><span class="line">            mf = Math.max(mf, f[s.charAt(r)-<span class="string">'A'</span>]);  </span><br><span class="line">            </span><br><span class="line">            <span class="comment">// move left index if frequent is greater than k</span></span><br><span class="line">            <span class="keyword">if</span>(length - mf &gt; k) &#123;</span><br><span class="line">                f[s.charAt(l) - <span class="string">'A'</span>]--;</span><br><span class="line">                l++;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            max = Math.max(max, r - l + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Not to duplicate number of frequent letter. For instance, if the letter at index i = 0, j = 0 is ‘A’, it will point to the same letter but it will count 2 for letter ‘A’. <strong>we can only increase right index to track the number of letters</strong></p>
-<p>Valify the length of less frequent substring is less than k and increase the left index once. <strong>Because it will decrease total length of window which is always less than max value</strong>. So we don’t need to keep increasing and validating the size of window by for loop.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Codec</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> idx = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Encodes a tree to a single string.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">serialize</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="string">"null"</span>;</span><br><span class="line">        <span class="keyword">return</span> root.val + <span class="string">","</span> + serialize(root.left) + <span class="string">","</span> + serialize(root.right);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">deserialize</span><span class="params">(String data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dfs(data.split(<span class="string">","</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> TreeNode <span class="title">dfs</span><span class="params">(String[] sl)</span> </span>&#123;</span><br><span class="line">        String s = sl[<span class="keyword">this</span>.idx];</span><br><span class="line">        </span><br><span class="line">        TreeNode node = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">this</span>.idx++;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(s.equals(<span class="string">"null"</span>)) <span class="keyword">return</span> node;</span><br><span class="line">        <span class="keyword">else</span> node = <span class="keyword">new</span> TreeNode(Integer.parseInt(s));</span><br><span class="line"></span><br><span class="line">        node.left = dfs(sl);</span><br><span class="line">        node.right = dfs(sl);</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5b1bc672-c028-4731-aab9-b85fe4fe08f4/Untitled.png" alt="Untitled"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
-<li>Time complexity of sliding window</li>
-<li><code>l</code> for left  index and <code>r</code> for right index</li>
-<li>I can only use one of index to check the value in array</li>
+<li>
+<p>preorder tree (parent → left → right)</p>
+</li>
+<li>
+<p>create node in dfs method and return the node</p>
+<ul>
+<li>I have never thought of <strong>creating TreeNode in the method and return it</strong>. only made a TreeNode outside of method and pass through parameter</li>
+<li>it makes easy to connect to the each left and right child node from the created node in method</li>
+</ul>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> TreeNode <span class="title">dfs</span><span class="params">(String[] sl)</span> </span>&#123;</span><br><span class="line">    String s = sl[<span class="keyword">this</span>.idx];</span><br><span class="line">    </span><br><span class="line">    TreeNode node = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.idx++;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(s.equals(<span class="string">"null"</span>)) <span class="keyword">return</span> node;</span><br><span class="line">    <span class="keyword">else</span> node = <span class="keyword">new</span> TreeNode(Integer.parseInt(s));</span><br><span class="line"></span><br><span class="line">    node.left = dfs(sl);</span><br><span class="line">    node.right = dfs(sl);</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="3">
+<li>
+<p>utilize the instance variable in class</p>
+<ul>
+<li>the pointer has to shift right in every call of dfs method</li>
+</ul>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> TreeNode <span class="title">dfs</span><span class="params">(String[] sl)</span> </span>&#123;</span><br><span class="line">    String s = sl[<span class="keyword">this</span>.idx];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 
                 
@@ -241,13 +259,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/13/20-Valid-Parentheses/" data-toggle="tooltip" data-placement="top" title="20. Valid Parentheses">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/11/647-Palindromic-Substrings/" data-toggle="tooltip" data-placement="top" title="647. Palindromic Substrings">Next Post &rarr;</a>
+                            <a href="/2022/09/23/371-Sum-of-Two-Integers/" data-toggle="tooltip" data-placement="top" title="371. Sum of Two Integers">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -330,8 +344,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/13/424-Longest-Repeating-Character-Replacement/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/13/424-Longest-Repeating-Character-Replacement/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/24/449-Serialize-and-Deserialize-BST/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/24/449-Serialize-and-Deserialize-BST/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
