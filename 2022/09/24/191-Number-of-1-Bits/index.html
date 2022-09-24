@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          100. Same Tree - Beantech | 豆科技
+          191. Number of 1 Bits - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/24/100-Same-Tree/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/24/191-Number-of-1-Bits/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,7 +91,7 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>100. Same Tree</h1>
+                        <h1>191. Number of 1 Bits</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
@@ -215,34 +215,99 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>two binary trees <code>p</code> and <code>q</code></li>
-<li>write a function to check if they are the same or not.
-<ul>
-<li>structurally identical</li>
-<li>the nodes have the same value</li>
-</ul>
-</li>
+<li>Write a function that takes an unsigned integer</li>
+<li>returns the number of ‘1’ bits</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>we need to check if both of tree are structurally identical first. it means that each node has identical child node at exact same poistion. for instance binary tree <code>p</code> only has left node then another binary tree <code>q</code> has to have left child node.</p>
-<p>second, we have to check if each node has same value.</p>
-<p>Time complexity is O(n)</p>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e49aa33-bdf2-41ad-b362-67de9f5f321e/A04630F7-8261-49BD-9313-74502FA348E6.jpeg" alt="A04630F7-8261-49BD-9313-74502FA348E6.jpeg"></p>
+<p>we can use one of bit manipulation operator. we can shift input bits to right and compare with AND operator. if result is 1 then we can count them</p>
+<p>| a | b | a &amp; b (AND) | a | b (OR) | a ^ b (XOR) |<br>
+| — | — | — | — | — |<br>
+| 0 | 0 | 0 | 0 | 1 |<br>
+| 0 | 1 | 0 | 1 | 0 |<br>
+| 1 | 0 | 0 | 1 | 0 |<br>
+| 1 | 1 | 1 | 1 | 1 |</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSameTree</span><span class="params">(TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="keyword">null</span> &amp;&amp; q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="keyword">null</span> || q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(p.val != q.val) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">return</span> isSameTree(p.left, q.left) &amp;&amp; isSameTree(p.right, q.right);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5dc130f0-51d5-42e1-92b8-673b4ee15eec/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">// you need to treat n as an unsigned value</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>((n &amp; <span class="number">1</span>) == <span class="number">1</span>) count++;</span><br><span class="line">            n = n &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/31e66524-1c64-4167-b3d4-e033f26dda44/Untitled.png" alt="Untitled"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
-<ol>
+<ul>
 <li>
-<p>when p and q both are null, if one of the p and q is null, <strong>then each q and p has to be not null</strong>. so I don’t need to check like below</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before</span></span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span> &amp;&amp; q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(q != <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(q == <span class="keyword">null</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(p != <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>there is <strong>no unsigned integer</strong> type in Java</p>
 </li>
+<li>
+<p>In Java, the compiler represents the signed integers using <a href="https://en.wikipedia.org/wiki/Two%27s_complement" target="_blank" rel="noopener">2’s complement notation</a></p>
+</li>
+<li>
+<p><strong>2’s completement notation</strong></p>
+<ul>
+<li>to get negative value in java there are two steps
+<ol>
+<li><strong>switch every 0 to 1 and 1 to 0 (complementation)</strong></li>
+<li><strong>add 1 (&amp;)</strong></li>
 </ol>
-<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// after</span></span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span> &amp;&amp; q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span> || q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>; </span><br><span class="line"><span class="comment">// when p is null then q have to be not null</span></span><br></pre></td></tr></table></figure>
-</code></pre>
+</li>
+<li>for instance to make -7 from 7</li>
+</ul>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">					<span class="number">0111</span> -&gt; <span class="number">4</span> + <span class="number">2</span> + <span class="number">1</span> = <span class="number">7</span></span><br><span class="line"><span class="keyword">switch</span>    <span class="number">1000</span></span><br><span class="line">add <span class="number">1</span>        <span class="number">1</span></span><br><span class="line">--------------</span><br><span class="line">          <span class="number">1001</span> -&gt; -<span class="number">8</span> + <span class="number">1</span> = <span class="number">7</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><code>&gt;&gt;</code> vs <code>&gt;&gt;&gt;</code>
+<ul>
+<li><code>&gt;&gt;</code> : signed right shift</li>
+<li><code>&gt;&gt;&gt;</code> : unsigned right shift</li>
+<li><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/opsummary.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/nutsandbolts/opsummary.html</a></li>
+</ul>
+</li>
+<li>what is signed and unsigned number?
+<ul>
+<li><strong>signed value</strong> : postive or negative
+<ul>
+<li>left most bit is signbit</li>
+<li><code>0</code> : positive</li>
+<li><code>1</code> : negative</li>
+</ul>
+</li>
+<li><strong>unsigned value</strong> : only positive</li>
+</ul>
+</li>
+<li>
+<h2><span id="why-do-we-need-signed-and-unsgined-number">why do we need signed and unsgined number?</span></h2>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>value</th>
+<th>range</th>
+<th>operator</th>
+<th>java support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>signed</td>
+<td>positive (0) &amp; negative (1)</td>
+<td>-2^32-1 ~ 2^32-1</td>
+<td>&gt;&gt;</td>
+<td>o</td>
+</tr>
+<tr>
+<td>unsigned</td>
+<td>positive</td>
+<td>0 ~ 2^32-1</td>
+<td>&gt;&gt;&gt;</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>how to handle minus bits</li>
+</ul>
 
                 
 
@@ -250,13 +315,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/24/191-Number-of-1-Bits/" data-toggle="tooltip" data-placement="top" title="191. Number of 1 Bits">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/24/449-Serialize-and-Deserialize-BST/" data-toggle="tooltip" data-placement="top" title="449. Serialize and Deserialize BST">Next Post &rarr;</a>
+                            <a href="/2022/09/24/100-Same-Tree/" data-toggle="tooltip" data-placement="top" title="100. Same Tree">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -286,7 +347,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">why do we need signed and unsgined number?</span></a></li></ol>
         
         </div>
       </aside>
@@ -339,8 +400,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/24/100-Same-Tree/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/24/100-Same-Tree/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/24/191-Number-of-1-Bits/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/24/191-Number-of-1-Bits/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
