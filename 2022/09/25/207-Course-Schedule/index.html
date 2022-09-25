@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          191. Number of 1 Bits - Beantech | 豆科技
+          207. Course Schedule - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/24/191-Number-of-1-Bits/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/25/207-Course-Schedule/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>191. Number of 1 Bits</h1>
+                        <h1>207. Course Schedule</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-24
+                            2022-09-25
                         </span>
                     </div>
                 
@@ -215,99 +215,46 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>Write a function that takes an unsigned integer</li>
-<li>returns the number of ‘1’ bits</li>
+<li>Return <code>true</code> if you can finish all courses. Otherwise, return <code>false</code></li>
+<li>All the pairs prerequisites[i] are <strong>unique</strong>.</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>we can use one of bit manipulation operator. we can shift input bits to right and compare with AND operator. if result is 1 then we can count them</p>
-<p>| a | b | a &amp; b (AND) | a | b (OR) | a ^ b (XOR) |<br>
-| — | — | — | — | — |<br>
-| 0 | 0 | 0 | 0 | 1 |<br>
-| 0 | 1 | 0 | 1 | 0 |<br>
-| 1 | 0 | 0 | 1 | 0 |<br>
-| 1 | 1 | 1 | 1 | 1 |</p>
+<p>we should check the prerequisites are in the course first. if it’s existed, then we can take a course. false case is when it has cycle in between prerequisities course and the course wants to take. if there is cycle then return false otherwise return true. <strong>how do I express the cycle with algorithm</strong>? Graph! we can use DFS algorithm to search the Graph</p>
+<p>Problem is how we can detect the cycle in graph?</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">// you need to treat n as an unsigned value</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>((n &amp; <span class="number">1</span>) == <span class="number">1</span>) count++;</span><br><span class="line">            n = n &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/31e66524-1c64-4167-b3d4-e033f26dda44/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    Map&lt;Integer, List&lt;Integer&gt;&gt; m;</span><br><span class="line">    Set&lt;Integer&gt; visited;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canFinish</span><span class="params">(<span class="keyword">int</span> nc, <span class="keyword">int</span>[][] prerequisites)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        m = <span class="keyword">new</span> HashMap();</span><br><span class="line">        visited = <span class="keyword">new</span> HashSet();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nc; i++) &#123;</span><br><span class="line">            m.put(i, <span class="keyword">new</span> ArrayList());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span>[] pre : prerequisites) &#123;</span><br><span class="line">            List&lt;Integer&gt; l = m.get(pre[<span class="number">0</span>]);</span><br><span class="line">            l.add(pre[<span class="number">1</span>]);</span><br><span class="line">            m.put(pre[<span class="number">0</span>], l);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nc; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!dfs(i)) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(visited.contains(k)) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(m.get(k) == <span class="keyword">null</span> || m.get(k).isEmpty()) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        </span><br><span class="line">        visited.add(k);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> l : m.get(k)) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!dfs(l)) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        visited.remove(k);</span><br><span class="line">        m.put(k, <span class="keyword">new</span> ArrayList());</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8da69891-2aca-4e68-b46b-2410a32d5406/Untitled.png" alt="Untitled"></p>
+<ol>
+<li><strong>Problem was how to detect loop in graph</strong>.
+<ul>
+<li>solution is <strong>Set</strong></li>
+<li>every iteration**, insert the current node into Set and after checking all of the children node then remove the current node from Set**.</li>
+<li><strong>when revisit the node, if it’s in the Set which mean it’s cycle</strong></li>
+</ul>
+</li>
+<li><strong>Another problem is how to check if the node has no cycle</strong>
+<ul>
+<li>we can remove the childrent nodes after visiting all the childrent nodes</li>
+<li><strong>if there is emtpy child node which mean the node won’t be able to make loop in Graph</strong></li>
+</ul>
+</li>
+</ol>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7558abdc-3248-4299-8f5d-79b10bf67f2a/31F9E96C-D597-4B0D-9EB7-2B3BF30995AF.jpeg" alt="31F9E96C-D597-4B0D-9EB7-2B3BF30995AF.jpeg"></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c4d854ce-457f-4842-87a6-5bebfcb0c136/9679588C-CCBB-46E0-AC71-92CB4B3F1E90.jpeg" alt="9679588C-CCBB-46E0-AC71-92CB4B3F1E90.jpeg"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
-<ul>
-<li>
-<p>there is <strong>no unsigned integer</strong> type in Java</p>
-</li>
-<li>
-<p>In Java, the compiler represents the signed integers using <a href="https://en.wikipedia.org/wiki/Two%27s_complement" target="_blank" rel="noopener">2’s complement notation</a></p>
-</li>
-<li>
-<p><strong>2’s completement notation</strong></p>
-<ul>
-<li>to get negative value in java there are two steps
 <ol>
-<li><strong>switch every 0 to 1 and 1 to 0 (complementation)</strong></li>
-<li><strong>add 1 (&amp;)</strong></li>
+<li>BFS, DFS (Backtracking)  is the way of searching in Tree, Graph</li>
+<li>Graph or Tree can be Map with node as key and list of child nodes as value! it doesn’t actually need to be</li>
+<li>to detect the loop in graph, we can use <strong>Set.</strong>
+<ul>
+<li><strong>add the node in Set</strong> when entry the node</li>
+<li><strong>remove the node in Set</strong> after visiting childrent nodes</li>
+</ul>
+</li>
 </ol>
-</li>
-<li>for instance to make -7 from 7</li>
-</ul>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">					<span class="number">0111</span> -&gt; <span class="number">4</span> + <span class="number">2</span> + <span class="number">1</span> = <span class="number">7</span></span><br><span class="line"><span class="keyword">switch</span>    <span class="number">1000</span></span><br><span class="line">add <span class="number">1</span>        <span class="number">1</span></span><br><span class="line">--------------</span><br><span class="line">          <span class="number">1001</span> -&gt; -<span class="number">8</span> + <span class="number">1</span> = <span class="number">7</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><code>&gt;&gt;</code> vs <code>&gt;&gt;&gt;</code>
-<ul>
-<li><code>&gt;&gt;</code> : signed right shift</li>
-<li><code>&gt;&gt;&gt;</code> : unsigned right shift</li>
-<li><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/opsummary.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/java/nutsandbolts/opsummary.html</a></li>
-</ul>
-</li>
-<li>what is signed and unsigned number?
-<ul>
-<li><strong>signed value</strong> : postive or negative
-<ul>
-<li>left most bit is signbit</li>
-<li><code>0</code> : positive</li>
-<li><code>1</code> : negative</li>
-</ul>
-</li>
-<li><strong>unsigned value</strong> : only positive</li>
-</ul>
-</li>
-<li>
-<h2><span id="why-do-we-need-signed-and-unsgined-number">why do we need signed and unsgined number?</span></h2>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>value</th>
-<th>range</th>
-<th>operator</th>
-<th>java support</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>signed</td>
-<td>positive (0) &amp; negative (1)</td>
-<td>-2^32-1 ~ 2^32-1</td>
-<td>&gt;&gt;</td>
-<td>o</td>
-</tr>
-<tr>
-<td>unsigned</td>
-<td>positive</td>
-<td>0 ~ 2^32-1</td>
-<td>&gt;&gt;&gt;</td>
-<td>x</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>how to handle minus bits</li>
-</ul>
 
                 
 
@@ -315,13 +262,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/25/57-Insert-Interval/" data-toggle="tooltip" data-placement="top" title="57. Insert Interval">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/24/100-Same-Tree/" data-toggle="tooltip" data-placement="top" title="100. Same Tree">Next Post &rarr;</a>
+                            <a href="/2022/09/25/57-Insert-Interval/" data-toggle="tooltip" data-placement="top" title="57. Insert Interval">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -351,7 +294,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">why do we need signed and unsgined number?</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
         
         </div>
       </aside>
@@ -404,8 +347,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/24/191-Number-of-1-Bits/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/24/191-Number-of-1-Bits/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/25/207-Course-Schedule/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/25/207-Course-Schedule/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
