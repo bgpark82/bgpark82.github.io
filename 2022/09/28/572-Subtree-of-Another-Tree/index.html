@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          54. Spiral Matrix - Beantech | 豆科技
+          572. Subtree of Another Tree - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/15/54-Spiral-Matrix/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/28/572-Subtree-of-Another-Tree/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>54. Spiral Matrix</h1>
+                        <h1>572. Subtree of Another Tree</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-15
+                            2022-09-28
                         </span>
                     </div>
                 
@@ -215,36 +215,35 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>return all of the elements of matrix in spiral order</li>
+<li>two <strong>binary trees</strong> <code>root</code> and <code>subRoot</code></li>
+<li>return <code>true</code> if there is a subtree of <code>root</code> with the same structure and node values of <code>subRoot</code></li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>In the most of the matrix problem, we have to consider the four ways (left → right, top → bottom, right → left, bottom → top)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">left -&gt; rigth : m[<span class="number">0</span>][<span class="number">0</span>] m[<span class="number">0</span>][<span class="number">1</span>] m[<span class="number">0</span>][<span class="number">2</span>]</span><br><span class="line">top -&gt; bottom : m[<span class="number">1</span>][<span class="number">2</span>] m[<span class="number">2</span>][<span class="number">2</span>]</span><br><span class="line">right -&gt; left : m[<span class="number">2</span>][<span class="number">1</span>] m[<span class="number">2</span>][<span class="number">0</span>]</span><br><span class="line">bottom -&gt; top : m[<span class="number">1</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<p>then we can find some patterns</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">left -&gt; rigth : m[top][<span class="number">0</span>]    m[top][<span class="number">1</span>]    m[top][<span class="number">2</span>]</span><br><span class="line">top -&gt; bottom : m[<span class="number">1</span>][right]  m[<span class="number">2</span>][right]</span><br><span class="line">right -&gt; left : m[bottom][<span class="number">1</span>] m[bottom][<span class="number">0</span>]</span><br><span class="line">bottom -&gt; top : m[<span class="number">1</span>][left]</span><br></pre></td></tr></table></figure>
-<p>in each row or column index, there are the fixed value (top, right, bottom, left) and its columns or rows are increased or decreased. range of the increase or decrease value can be (bottom - top) or (right - left)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">left -&gt; rigth : m[top][<span class="number">0</span>]    m[top][<span class="number">1</span>]    m[top][<span class="number">2</span>] (right - left)</span><br><span class="line">top -&gt; bottom : m[<span class="number">1</span>][right]  m[<span class="number">2</span>][right]            (bottom - top)</span><br><span class="line">right -&gt; left : m[bottom][<span class="number">1</span>] m[bottom][<span class="number">0</span>]           (right - left)</span><br><span class="line">bottom -&gt; top : m[<span class="number">1</span>][left]                          (bottom - top)</span><br></pre></td></tr></table></figure>
-<p>after checking the most outlayer done, all we need to do is narrow down the scope (left++, right–, top++, bottom–)</p>
+<p>we can start with DFS first. one we find the value of subRoot in root Tree, then move to the same direction of child node for both of subRoot and root tree. once complete traverse subRoot tree then return true if root tree has the same subtree otherwise false</p>
+<p>One of the constraint that I couldn’t notice is tree does not have child node in terms of the same structure. so it can be easier to return condition at DFS algorithm</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a33c168f-daaf-4e31-b112-466585656805/FE9CC412-5EEC-45B2-9259-794EAD021E8D.jpeg" alt="FE9CC412-5EEC-45B2-9259-794EAD021E8D.jpeg"></p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public List&lt;Integer&gt; spiralOrder(int[][] m) &#123;</span><br><span class="line">        </span><br><span class="line">        List&lt;Integer&gt; list = new ArrayList();</span><br><span class="line">        </span><br><span class="line">        int t = <span class="number">0</span>, b = m.length<span class="number">-1</span>, l = <span class="number">0</span>, r = m[<span class="number">0</span>].length<span class="number">-1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r &amp;&amp; t &lt;= b) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span>(int i = l; i &lt;= r; i++) &#123; </span><br><span class="line">                list.add(m[t][i]);</span><br><span class="line">            &#125;</span><br><span class="line">            t++;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span>(int i = t; i &lt;= b; i++) &#123;</span><br><span class="line">                list.add(m[i][r]);</span><br><span class="line">            &#125;</span><br><span class="line">            r--;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(int i = r; t &lt;= b &amp;&amp; i &gt;= l; i--) &#123;</span><br><span class="line">                list.add(m[b][i]);</span><br><span class="line">            &#125;</span><br><span class="line">            b--;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span>(int i = b; l &lt;= r &amp;&amp; i &gt;= t; i--) &#123;</span><br><span class="line">                list.add(m[i][l]);</span><br><span class="line">            &#125;</span><br><span class="line">            l++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eff2ad78-06df-40f2-b00b-655469371d5b/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSubtree</span><span class="params">(TreeNode root, TreeNode subRoot)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span>(isSame(root, subRoot)) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isSame</span><span class="params">(TreeNode root, TreeNode subRoot)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span> &amp;&amp; subRoot == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span> || subRoot == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(root.val != subRoot.val) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> isSame(root.left, subRoot.left) &amp;&amp; isSame(root.right, subRoot.right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1a763a04-c2e4-4b79-a4a2-d2475f472a65/Untitled.png" alt="Untitled"></p>
+<p>There are two ways of traversal</p>
+<ol>
+<li>traverse binary tree until last node (left or right)</li>
+<li>traverse the same structured and value node until both of node are null (left or right)</li>
+</ol>
+<p>first case is that we need to traverse left and right node until the last node. in the meantime we have to check if the value of root and subRoot is the same or not. if it is true, then we start traverse to see if both of tree have the same structure and value</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSubtree</span><span class="params">(TreeNode root, TreeNode subRoot)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// return when it's last node</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>second case is that we can back on to normal binary tree traversal when both of value is not the same. it means that it keep traversing the root tree to the last node. so it’s important to know that we can return to binary tree traveresal when it’s not the same value.</p>
+<p>then if the value of both trees has the same value then return true or if one of the node has child node then return false since it doesn’t have same structure.</p>
+<p>when spilt to left and right node, we used <code>&amp;&amp;</code> which mean all of the child node has to be the same. if there is false from one of the descentant, then return false</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isSame</span><span class="params">(TreeNode root, TreeNode subRoot)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span> &amp;&amp; subRoot == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>; <span class="comment">// if both last node is null, it could be same structure</span></span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span> || subRoot == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// if one of the node has child node, it doesn't have same structure</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(root.val != subRoot.val) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// if it's not the same value we can go back to normal traverse which is isSubtree method</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> isSame(root.left, subRoot.left) &amp;&amp; isSame(root.right, subRoot.right); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
-<li>we have to consider four different ways in matrix problem
-<ul>
-<li>left → right</li>
-<li>top → bottom</li>
-<li>right → left</li>
-<li>bottom → top</li>
-</ul>
-</li>
-<li>In case of top is greater than bottom. so it has to be skipped</li>
+<li>DFS has another DFS stream</li>
+<li>important to set return point in DFS</li>
 </ol>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/45e05793-13f6-4fee-87e5-b21107b848cd/Untitled.png" alt="Untitled"></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// t = 2, b = 1 </span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = r; t &lt;= b &amp;&amp; i &gt;= l; i--) &#123; </span><br><span class="line">    list.add(m[b][i]);</span><br><span class="line">&#125;</span><br><span class="line">b--;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = b; l &lt;= r &amp;&amp; i &gt;= t; i--) &#123;</span><br><span class="line">    list.add(m[i][l]);</span><br><span class="line">&#125;</span><br><span class="line">l++;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -252,13 +251,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/16/55-Jump-Game/" data-toggle="tooltip" data-placement="top" title="55. Jump Game">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/15/128-Longest-Consecutive-Sequence/" data-toggle="tooltip" data-placement="top" title="128. Longest Consecutive Sequence">Next Post &rarr;</a>
+                            <a href="/2022/09/27/347-Top-K-Frequent-Elements/" data-toggle="tooltip" data-placement="top" title="347. Top K Frequent Elements">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -341,8 +336,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/15/54-Spiral-Matrix/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/15/54-Spiral-Matrix/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/28/572-Subtree-of-Another-Tree/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/28/572-Subtree-of-Another-Tree/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
