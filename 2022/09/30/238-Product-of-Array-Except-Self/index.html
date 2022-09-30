@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          435. Non-overlapping Intervals - Beantech | 豆科技
+          238. Product of Array Except Self - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/28/435-Non-overlapping-Intervals/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/30/238-Product-of-Array-Except-Self/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>435. Non-overlapping Intervals</h1>
+                        <h1>238. Product of Array Except Self</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-28
+                            2022-09-30
                         </span>
                     </div>
                 
@@ -215,33 +215,25 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>return <em>the <strong>minimum number</strong> of intervals you need to remove to make the rest of the intervals non-overlapping</em></li>
+<li><code>answer[i]</code> <em>is equal to the product of all the elements of</em> <code>nums</code> <em>except</em> <code>nums[i]</code></li>
+<li>The product of any prefix or suffix of <code>nums</code> is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</li>
+<li>You must write an algorithm that runs in <code>O(n)</code> time and without using the division operation.</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>There are 3 steps to solve this problem</p>
-<ol>
-<li>sort array by the start point</li>
-<li>if current start point is greater than equals to previous end point, it’s not overlapped</li>
-<li>if it’s not, those intervals are overlapped
-<ol>
-<li>increase count</li>
-<li>set previous end point to smaller end point from current or previous end point (Greedy)</li>
-</ol>
-</li>
-</ol>
-<p>the key is setting <strong>previous end point to smaller value of current or previous end point</strong>. which is greedy approach. if end point is smaller, there is higher chance to be less overlapped</p>
-<p>Time complexity is O(nlogN) which is for sorting array</p>
+<p>it can be simple math problem. create product of all elements of array and divide them in each element.</p>
+<p>but how do it handle 0?</p>
+<p>Another option is dynamic programming. each element has to know product of previous element from current index. calculate product of left element and calulate right element again.</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">eraseOverlapIntervals</span><span class="params">(<span class="keyword">int</span>[][] intervals)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        Arrays.sort(intervals, (i, j) -&gt; i[<span class="number">0</span>] - j[<span class="number">0</span>]);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>, pe = intervals[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; intervals.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> s = intervals[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> e = intervals[i][<span class="number">1</span>];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(s &gt;= pe) pe = e;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                count++;</span><br><span class="line">                pe = Math.min(pe, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/225f1bd2-8318-4d06-899e-da602c6eae67/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] productExceptSelf(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span>[] ans = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        </span><br><span class="line">        ans[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            ans[i] = ans[i - <span class="number">1</span>] * nums[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> pr = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            ans[i] *= pr;</span><br><span class="line">            pr *= nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/65d3250b-c5d0-4ca4-87c7-6c1d8d23b4ef/Untitled.png" alt="Untitled"></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d97af286-acbb-41be-a466-f1dfbe27ba97/A99A29B8-77DD-4AFE-BCFB-54C35C0C3D02.jpeg" alt="A99A29B8-77DD-4AFE-BCFB-54C35C0C3D02.jpeg"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
-<ol>
-<li>drawing a picture for the complicated problem</li>
-<li>Greedy is the way that choose the best answer in every sub problem</li>
-</ol>
+<ul>
+<li>product = multiplication</li>
+</ul>
 
                 
 
@@ -249,13 +241,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/29/417-Pacific-Atlantic-Water-Flow/" data-toggle="tooltip" data-placement="top" title="417. Pacific Atlantic Water Flow">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/28/572-Subtree-of-Another-Tree/" data-toggle="tooltip" data-placement="top" title="572. Subtree of Another Tree">Next Post &rarr;</a>
+                            <a href="/2022/09/30/322-Coin-Change/" data-toggle="tooltip" data-placement="top" title="322. Coin Change">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -338,8 +326,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/28/435-Non-overlapping-Intervals/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/28/435-Non-overlapping-Intervals/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/30/238-Product-of-Array-Except-Self/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/30/238-Product-of-Array-Except-Self/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
