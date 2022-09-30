@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          33. Search in Rotated Sorted Array - Beantech | 豆科技
+          322. Coin Change - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/09/33-Search-in-Rotated-Sorted-Array/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/09/30/322-Coin-Change/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>33. Search in Rotated Sorted Array</h1>
+                        <h1>322. Coin Change</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-09
+                            2022-09-30
                         </span>
                     </div>
                 
@@ -214,41 +214,55 @@
 
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
-<ol>
-<li>Time Complexity is O(logN)</li>
-<li><code>*nums*</code> is sorted in ascending order다</li>
-<li><code>*nums*</code> is with distinct values</li>
-</ol>
-<p>What we can get from conditions is that it is binary search question since it has to take only O(logN) to search the target value in array</p>
+<ul>
+<li>Return <em>the fewest number of coins that you need to make up that amount</em></li>
+<li>You may assume that you have an infinite number of each kind of coin.</li>
+</ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>to use the binary search algorithm, <strong>arrays need to be sorted</strong>. but the given nums is rotated at certain pivot index which means the sub array of nums is in ascneding order. so if we are able to find the pivot index, we could use the binary search algorithm to find the target value. but in the condition, the whole time complexity needs to be O(logN), we also have to use the binary search to find the pivot index value</p>
+<p>most of permutation problem can be handled by Dynamic programming.</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.length == <span class="number">0</span> || nums == <span class="keyword">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 1. find the pivot index with the binary search</span></span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = nums.length-<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[m] &gt; nums[r]) &#123; <span class="comment">// 1 &gt; 3  r = 2 -&gt; 0</span></span><br><span class="line">                l = m + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = m;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2. select the sub array which has target value and reset the left and right index of the sub array</span></span><br><span class="line">        <span class="keyword">int</span> s = l;</span><br><span class="line">        l = <span class="number">0</span>;</span><br><span class="line">        r = nums.length-<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(target &gt;= nums[s] &amp;&amp; target &lt;= nums[r]) &#123;</span><br><span class="line">            l = s;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            r = s;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 3. search the target index in sub array</span></span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[m] == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> m;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[m] &lt; target) &#123;</span><br><span class="line">                l = m + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = m - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="bottom-up">bottom up</span></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    Integer[] dp;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">coinChange</span><span class="params">(<span class="keyword">int</span>[] coins, <span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        dp = <span class="keyword">new</span> Integer[amount+<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">return</span> dfs(coins, amount);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span>[] coins, <span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// condition at last node</span></span><br><span class="line">        <span class="keyword">if</span>(amount &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(amount == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// minimum count at amount </span></span><br><span class="line">        <span class="keyword">if</span>(dp[amount] != <span class="keyword">null</span>) <span class="keyword">return</span> dp[amount];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> min = Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; coins.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> count = dfs(coins, amount - coins[i]);</span><br><span class="line">            <span class="keyword">if</span>(count &gt;= <span class="number">0</span>) min = Math.min(c + <span class="number">1</span>, min);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dp[amount] = (min == Integer.MAX_VALUE) ? -<span class="number">1</span> : min;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/188c68b9-9bcc-4641-9f32-02c4b5873da7/Untitled.png" alt="Untitled"></p>
+<p>the meaning of each element in <code>dp[x]</code> is that minimum combination when <code>x</code> amount left. for instance <strong>dp[5] = 1, which mean when amount left 5 then there are only 1 combination to be amount = 0</strong>. so in this question, what we want to know is number of combination to make amount 0, so we have to consider <strong>all of the possibility from 0 to amount</strong>.</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d8a93ed8-e2b8-40b8-9402-5a40775beb1b/72846EBD-1718-468F-A90A-5D623DC11E7D.jpeg" alt="72846EBD-1718-468F-A90A-5D623DC11E7D.jpeg"></p>
+<h3><span id="top-down">top down</span></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span>[] dp;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">coinChange</span><span class="params">(<span class="keyword">int</span>[] coins, <span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        dp = <span class="keyword">new</span> <span class="keyword">int</span>[amount + <span class="number">1</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(++sum &lt;= amount) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">int</span> min = -<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> coin : coins) &#123;          </span><br><span class="line">                <span class="comment">// sum - coin &lt; 0 : can't be 0 at current node</span></span><br><span class="line">                <span class="comment">// dp[1] == -1 : there is no way to make 0 when 1 is left </span></span><br><span class="line">                <span class="keyword">if</span>(sum - coin &gt;= <span class="number">0</span> &amp;&amp; dp[sum - coin] != -<span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> tmp = dp[sum - coin] + <span class="number">1</span>;                    </span><br><span class="line">                    min = (min &lt; <span class="number">0</span>) ? tmp : (tmp &lt; min) ? tmp : min;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;    </span><br><span class="line">            dp[sum] = min;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dp[amount];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d7ed11b-8ffc-4ffe-a147-ee1543ad58d7/Untitled.png" alt="Untitled"></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/22798aee-8143-4c89-9a3f-68a1c157a765/16435737-A6CD-4AD8-8464-FD182778E0CE.jpeg" alt="16435737-A6CD-4AD8-8464-FD182778E0CE.jpeg"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
 <ol>
 <li>
-<p>setting right index</p>
+<p>always define sub problem in dynamic programming</p>
 </li>
 <li>
-<p>mid point in even length of array</p>
-<ul>
-<li>in java, <strong>the actual number will be truncated in <em><code>int</code></em> data type</strong></li>
-</ul>
- <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[1,2,3,4]</span><br><span class="line"></span><br><span class="line">int left = 0;</span><br><span class="line">int right = 3;</span><br><span class="line">int mid = left + (right - left) / 2;</span><br><span class="line">        = 0 + (3 - 0)/2</span><br><span class="line">        = 0 + 1.5</span><br><span class="line">        = 1</span><br></pre></td></tr></table></figure>
+<p><strong>decide what to be the value of node</strong>. in this case, remainer is value of node. <strong>The value of node is mostly one of the method parameter</strong>.</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d9972b4c-e1f4-40ff-a714-562a4a1159e4/96252388-D5CA-4291-82E9-A5380BA54248.jpeg" alt="96252388-D5CA-4291-82E9-A5380BA54248.jpeg"></p>
+</li>
+<li>
+<p>The return value of dynamic programming is what we want. but with memoization, it can also be the value at the node in momization array</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> dp[amount] = (min == Integer.MAX_VALUE) ? -<span class="number">1</span> : min;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<ol start="3">
-<li>
-<p>condition in while loop</p>
+<pre><code>- since we want to know the minimum number of combination. so return the **minimum number** and **memoization array**
+</code></pre>
+<ol start="4">
+<li>In dynamic programming, it’s important to decide <strong>the value of node</strong> and <strong>return value</strong>.</li>
+<li>utilize default value (ie. dp[0] = -1, dp[last index] = 0)</li>
+<li>understand elements of memoization array
 <ul>
-<li>In binary search, condition in while loop has to be <code>*left ≤ right*</code>, <strong>if size of the array is one, then it happen to compare the same index</strong></li>
-<li><strong>The left and right index updated with +1 and -1</strong> in order to meet the <em><code>left ≤ right</code></em> condition. otherwise it will stuck in while loop at certain point in time. for instance left = 1, right = 1</li>
-<li>ex) array = [1], left = 0, right = 0 → when left &lt; right in while condition, it can’t go into the while loop since it does not meet the condition</li>
+<li>dp[1] = -1 means there is no way to make 0 when 1 is left</li>
 </ul>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">    <span class="keyword">int</span> m = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(nums[m] == target) &#123;</span><br><span class="line">        <span class="keyword">return</span> m;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[m] &lt; target) &#123;</span><br><span class="line">        l = m + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        r = m - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>in a nutshell
+<ol>
+<li><strong>define the value of node (ie. index)</strong></li>
+<li><strong>define the return value (ie. sum)</strong></li>
+<li><strong>define the element of memoization (ie. min value)</strong></li>
+</ol>
 </li>
 </ol>
 
@@ -258,13 +272,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/10/39-Combination-Sum/" data-toggle="tooltip" data-placement="top" title="39. Combination Sum">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/02/9월-2일-새로운-컨텐츠/" data-toggle="tooltip" data-placement="top" title="9월 2일 새로운 컨텐츠">Next Post &rarr;</a>
+                            <a href="/2022/09/29/417-Pacific-Atlantic-Water-Flow/" data-toggle="tooltip" data-placement="top" title="417. Pacific Atlantic Water Flow">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -294,7 +304,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">bottom up</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">top down</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
         
         </div>
       </aside>
@@ -347,8 +357,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/09/33-Search-in-Rotated-Sorted-Array/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/09/33-Search-in-Rotated-Sorted-Array/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/09/30/322-Coin-Change/";
+    var disqus_url = "https://bgpark82.github.io/2022/09/30/322-Coin-Change/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
