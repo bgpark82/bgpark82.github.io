@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          238. Product of Array Except Self - Beantech | 豆科技
+          236. Lowest Common Ancestor of a Binary Tree - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/30/238-Product-of-Array-Except-Self/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/10/01/236-Lowest-Common-Ancestor-of-a-Binary-Tree/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>238. Product of Array Except Self</h1>
+                        <h1>236. Lowest Common Ancestor of a Binary Tree</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-30
+                            2022-10-01
                         </span>
                     </div>
                 
@@ -215,25 +215,44 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li><code>answer[i]</code> <em>is equal to the product of all the elements of</em> <code>nums</code> <em>except</em> <code>nums[i]</code></li>
-<li>The product of any prefix or suffix of <code>nums</code> is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</li>
-<li>You must write an algorithm that runs in <code>O(n)</code> time and without using the division operation.</li>
+<li>binary tree</li>
+<li>find the lowest common ancestor (LCA) of two given nodes in the tree.</li>
+<li>he lowest common ancestor is defined between two nodes <code>p</code> and <code>q</code> as the lowest node in <code>T</code> that has both <code>p</code> and <code>q</code> as descendants</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>it can be simple math problem. create product of all elements of array and divide them in each element.</p>
-<p>but how do it handle 0?</p>
-<p>Another option is dynamic programming. each element has to know product of previous element from current index. calculate product of left element and calulate right element again.</p>
+<p>Unlike lowest common ancestor of binary search tree question, we have to visit both of left and right childrent anyway. if we find the node then return otherwise should compare visited left and right node. there are two caes can be the lowest common ancestors</p>
+<ol>
+<li>both of child nodes are not null</li>
+<li>one of child is not null</li>
+</ol>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6a3e6f65-4d61-4253-968f-d4e2700b59a4/1F161E1D-86B1-4D4F-A879-F48C16FE3DB0.jpeg" alt="1F161E1D-86B1-4D4F-A879-F48C16FE3DB0.jpeg"></p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] productExceptSelf(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span>[] ans = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        </span><br><span class="line">        ans[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            ans[i] = ans[i - <span class="number">1</span>] * nums[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> pr = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            ans[i] *= pr;</span><br><span class="line">            pr *= nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/65d3250b-c5d0-4ca4-87c7-6c1d8d23b4ef/Untitled.png" alt="Untitled"></p>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d97af286-acbb-41be-a466-f1dfbe27ba97/A99A29B8-77DD-4AFE-BCFB-54C35C0C3D02.jpeg" alt="A99A29B8-77DD-4AFE-BCFB-54C35C0C3D02.jpeg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span>(root == p || root == q) <span class="keyword">return</span> root;</span><br><span class="line">        </span><br><span class="line">        TreeNode ln = lowestCommonAncestor(root.left, p, q);</span><br><span class="line">        TreeNode rn = lowestCommonAncestor(root.right, p, q);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(ln != <span class="keyword">null</span> &amp;&amp; rn != <span class="keyword">null</span>) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">return</span> ln != <span class="keyword">null</span> ? ln : rn;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/348363f5-19b4-44a8-9dc9-2c95fee12fc6/Untitled.png" alt="Untitled"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
-<ul>
-<li>product = multiplication</li>
-</ul>
+<ol>
+<li>
+<p>read the code carefully</p>
+</li>
+<li>
+<p>compare with reference of node</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root == p</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="3">
+<li>
+<p>three part of tree traversal. <strong>every things happens in the current node!</strong></p>
+<ol>
+<li>enter the current node</li>
+<li>visit child nodes</li>
+<li>come back from child node</li>
+</ol>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 1. enter the current root      </span></span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span>(root == p || root == q) <span class="keyword">return</span> root;</span><br><span class="line">    </span><br><span class="line">		<span class="comment">// 2. visit child nodes</span></span><br><span class="line">    TreeNode ln = lowestCommonAncestor(root.left, p, q);</span><br><span class="line">    TreeNode rn = lowestCommonAncestor(root.right, p, q);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 3. come back from child nodes</span></span><br><span class="line">    <span class="keyword">if</span>(ln != <span class="keyword">null</span> &amp;&amp; rn != <span class="keyword">null</span>) <span class="keyword">return</span> root;</span><br><span class="line">    <span class="keyword">return</span> ln != <span class="keyword">null</span> ? ln : rn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
                 
 
@@ -241,13 +260,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/10/01/236-Lowest-Common-Ancestor-of-a-Binary-Tree/" data-toggle="tooltip" data-placement="top" title="236. Lowest Common Ancestor of a Binary Tree">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/30/322-Coin-Change/" data-toggle="tooltip" data-placement="top" title="322. Coin Change">Next Post &rarr;</a>
+                            <a href="/2022/09/30/238-Product-of-Array-Except-Self/" data-toggle="tooltip" data-placement="top" title="238. Product of Array Except Self">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -330,8 +345,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/30/238-Product-of-Array-Except-Self/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/30/238-Product-of-Array-Except-Self/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/10/01/236-Lowest-Common-Ancestor-of-a-Binary-Tree/";
+    var disqus_url = "https://bgpark82.github.io/2022/10/01/236-Lowest-Common-Ancestor-of-a-Binary-Tree/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
