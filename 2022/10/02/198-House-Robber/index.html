@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          206. Reverse Linked List - Beantech | 豆科技
+          198. House Robber - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/10/01/206-Reverse-Linked-List/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/10/02/198-House-Robber/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>206. Reverse Linked List</h1>
+                        <h1>198. House Robber</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-10-01
+                            2022-10-02
                         </span>
                     </div>
                 
@@ -215,19 +215,62 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>singly linked list</li>
-<li>return <em>the reversed list</em><br>
-.</li>
+<li><strong>it will automatically contact the police if two adjacent houses were broken into on the same night</strong></li>
+<li>return <em><strong>the maximum amount of money</strong> you can rob tonight <strong>without alerting the police</strong></em></li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>Simply store the node values in Stack and create the reversed linked list</p>
+<p>it’s dynamic programming + memoization problem. Time complexity is O(n) and space complexity is O(n)</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        </span><br><span class="line">        Stack&lt;Integer&gt; s = <span class="keyword">new</span> Stack();</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span>) &#123;</span><br><span class="line">            s.push(head.val);</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        ListNode node = <span class="keyword">new</span> ListNode(s.pop());</span><br><span class="line">        head = node;</span><br><span class="line">        <span class="keyword">while</span>(!s.isEmpty()) &#123;</span><br><span class="line">            ListNode cn = <span class="keyword">new</span> ListNode(s.pop());</span><br><span class="line">            head.next = cn;</span><br><span class="line">            head = cn;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b2415ecc-1eb0-4bd1-a52b-cf0dc92f4473/Untitled.png" alt="Untitled"></p>
+<h3><span id="top-down">top-down</span></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span>[] dp;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        dp = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line">        Arrays.fill(dp, -<span class="number">1</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dfs(nums, nums.length-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(i &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(dp[i] != -<span class="number">1</span>) <span class="keyword">return</span> dp[i];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dp[i] = Math.max(dfs(nums, i - <span class="number">2</span>) + nums[i], dfs(nums, i - <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c9d36ba0-fb69-4459-9339-656af4969d12/Untitled.png" alt="Untitled"></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c93822ee-eed1-4881-8021-a0bfebd15105/999401C1-FE13-48F2-9187-866676E614F9.jpeg" alt="999401C1-FE13-48F2-9187-866676E614F9.jpeg"></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9b400338-072b-44fd-a807-ec376ccec8e8/F93EAE72-6D07-4C5F-913A-E55CC0C43572.jpeg" alt="F93EAE72-6D07-4C5F-913A-E55CC0C43572.jpeg"></p>
+<p>in order to find maximum amount of money at house <code>i</code> , we have to compare the cumumlative amount of money at house <code>i-1</code> as well. because there we can’t rob the adjacent house so we have to decide which house has more amount money between <code>i</code> and <code>i-1</code> even tho house at <code>i</code></p>
+<p>there are 2 options to rob</p>
+<ol>
+<li>rob current house <code>i</code></li>
+<li>don’t rob current house</li>
+</ol>
+<p>first option means that add current money <code>i</code> to an cumulative money <code>i-2</code></p>
+<p>secodn option is that choose the an cumulative money <code>i-1</code> houses</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Math.max(dfs(i - <span class="number">2</span>) + nums[i], dfs(i - <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+<h3><span id="bottom-up">bottom-up</span></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span>[] dp;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        dp = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length + <span class="number">1</span>];</span><br><span class="line">        </span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">1</span>] = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; dp.length; i++) &#123;</span><br><span class="line">            dp[i] = Math.max(dp[i-<span class="number">2</span>] + nums[i-<span class="number">1</span>], dp[i - <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[dp.length - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e03378ed-1277-4b21-a795-4b0632ffb016/Untitled.png" alt="Untitled"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
+<ol>
+<li>
+<p>dynamic programming can be start from length to 0</p>
+</li>
+<li>
+<p>relationship between sub problem and current problem</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Math.max(dfs(i-<span class="number">2</span>) + nums[i]</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="3">
+<li>
+<p>use Arrays method to fill with -1</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.fill(dp, -<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="4">
+<li>
+<p>value of node can be element of memoization</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9b400338-072b-44fd-a807-ec376ccec8e8/F93EAE72-6D07-4C5F-913A-E55CC0C43572.jpeg" alt="F93EAE72-6D07-4C5F-913A-E55CC0C43572.jpeg"></p>
+</li>
+<li>
+<p>need extra space for bottom up memoization</p>
+<ul>
+<li>I thought I was able to reuse <code>nums</code> array but it cause the out of bound at <code>i-2</code></li>
+<li>so I create <code>dp</code> with size of nums.length + 1 and set 0 at index 0 for <code>i-2</code></li>
+</ul>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] dp;</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    dp = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length + <span class="number">1</span>];</span><br><span class="line">    </span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    dp[<span class="number">1</span>] = nums[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; dp.length; i++) &#123;</span><br><span class="line">        dp[i] = Math.max(dp[i-<span class="number">2</span>] + nums[i-<span class="number">1</span>], dp[i - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[dp.length - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
                 
 
@@ -235,13 +278,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/10/02/198-House-Robber/" data-toggle="tooltip" data-placement="top" title="198. House Robber">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/10/01/236-Lowest-Common-Ancestor-of-a-Binary-Tree/" data-toggle="tooltip" data-placement="top" title="236. Lowest Common Ancestor of a Binary Tree">Next Post &rarr;</a>
+                            <a href="/2022/10/01/206-Reverse-Linked-List/" data-toggle="tooltip" data-placement="top" title="206. Reverse Linked List">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -271,7 +310,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Solution</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">top-down</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">bottom-up</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li></ol>
         
         </div>
       </aside>
@@ -324,8 +363,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/10/01/206-Reverse-Linked-List/";
-    var disqus_url = "https://bgpark82.github.io/2022/10/01/206-Reverse-Linked-List/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/10/02/198-House-Robber/";
+    var disqus_url = "https://bgpark82.github.io/2022/10/02/198-House-Robber/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
