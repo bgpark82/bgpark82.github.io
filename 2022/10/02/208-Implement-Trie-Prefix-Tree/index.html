@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          100. Same Tree - Beantech | 豆科技
+          208. Implement Trie (Prefix Tree) - Beantech | 豆科技
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/09/24/100-Same-Tree/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/10/02/208-Implement-Trie-Prefix-Tree/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>100. Same Tree</h1>
+                        <h1>208. Implement Trie (Prefix Tree)</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-09-24
+                            2022-10-02
                         </span>
                     </div>
                 
@@ -215,34 +215,29 @@
                 <h2><span id="conditions">Conditions</span></h2>
 <hr>
 <ul>
-<li>two binary trees <code>p</code> and <code>q</code></li>
-<li>write a function to check if they are the same or not.
-<ul>
-<li>structurally identical</li>
-<li>the nodes have the same value</li>
-</ul>
-</li>
+<li><code>word</code> and <code>prefix</code> consist only of lowercase English letters.</li>
 </ul>
 <h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
 <hr>
-<p>we need to check if both of tree are structurally identical first. it means that each node has identical child node at exact same poistion. for instance binary tree <code>p</code> only has left node then another binary tree <code>q</code> has to have left child node.</p>
-<p>second, we have to check if each node has same value.</p>
-<p>Time complexity is O(n)</p>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e49aa33-bdf2-41ad-b362-67de9f5f321e/A04630F7-8261-49BD-9313-74502FA348E6.jpeg" alt="A04630F7-8261-49BD-9313-74502FA348E6.jpeg"></p>
+<p>This is basic Trie data structure</p>
 <h2><span id="solution">Solution</span></h2>
 <hr>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSameTree</span><span class="params">(TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="keyword">null</span> &amp;&amp; q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="keyword">null</span> || q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(p.val != q.val) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">return</span> isSameTree(p.left, q.left) &amp;&amp; isSameTree(p.right, q.right);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5dc130f0-51d5-42e1-92b8-673b4ee15eec/Untitled.png" alt="Untitled"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Trie</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    Trie[] next;</span><br><span class="line">    <span class="keyword">boolean</span> end;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trie</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.next = <span class="keyword">new</span> Trie[<span class="number">26</span>];</span><br><span class="line">        <span class="keyword">this</span>.end = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(String word)</span> </span>&#123;</span><br><span class="line">        Trie trie = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; word.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">char</span> c = word.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(trie.next[c - <span class="string">'a'</span>] == <span class="keyword">null</span>) trie.next[c - <span class="string">'a'</span>] = <span class="keyword">new</span> Trie();</span><br><span class="line">            trie = trie.next[c - <span class="string">'a'</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        trie.end = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">search</span><span class="params">(String word)</span> </span>&#123;</span><br><span class="line">        Trie trie = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; word.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">char</span> c = word.charAt(i);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(trie.next[c - <span class="string">'a'</span>] == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// letter is not stored</span></span><br><span class="line"></span><br><span class="line">            trie = trie.next[c - <span class="string">'a'</span>];    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> trie.end;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">startsWith</span><span class="params">(String prefix)</span> </span>&#123;</span><br><span class="line">        Trie trie = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prefix.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">char</span> c = prefix.charAt(i);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(trie.next[c - <span class="string">'a'</span>] == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;  <span class="comment">// letter is not stored</span></span><br><span class="line">            </span><br><span class="line">            trie = trie.next[c - <span class="string">'a'</span>];    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a1556a0-38ec-44c0-8c91-7b5cd2aa8239/Untitled.png" alt="Untitled"></p>
 <h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
 <hr>
-<ol>
+<ul>
 <li>
-<p>when p and q both are null, if one of the p and q is null, <strong>then each q and p has to be not null</strong>. so I don’t need to check like below</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before</span></span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span> &amp;&amp; q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(q != <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(q == <span class="keyword">null</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(p != <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Trie is prefix tree</p>
 </li>
-</ol>
-<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// after</span></span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span> &amp;&amp; q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">if</span>(p == <span class="keyword">null</span> || q == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>; </span><br><span class="line"><span class="comment">// when p is null then q have to be not null</span></span><br></pre></td></tr></table></figure>
-</code></pre>
+<li>
+<p>Trie is for autocomplete and spellchecker</p>
+</li>
+<li>
+<p>we can only check if the letter is in Trie or not</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(trie.next[c - <span class="string">'a'</span>] == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// letter is not stored</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
                 
 
@@ -250,13 +245,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/09/24/191-Number-of-1-Bits/" data-toggle="tooltip" data-placement="top" title="191. Number of 1 Bits">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/09/24/449-Serialize-and-Deserialize-BST/" data-toggle="tooltip" data-placement="top" title="449. Serialize and Deserialize BST">Next Post &rarr;</a>
+                            <a href="/2022/10/02/230-Kth-Smallest-Element-in-a-BST/" data-toggle="tooltip" data-placement="top" title="230. Kth Smallest Element in a BST">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -339,8 +330,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/09/24/100-Same-Tree/";
-    var disqus_url = "https://bgpark82.github.io/2022/09/24/100-Same-Tree/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/10/02/208-Implement-Trie-Prefix-Tree/";
+    var disqus_url = "https://bgpark82.github.io/2022/10/02/208-Implement-Trie-Prefix-Tree/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
