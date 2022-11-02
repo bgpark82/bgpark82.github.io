@@ -3,7 +3,7 @@
 
     <sitemap>
         <loc>https://bgpark82.github.io/post-sitemap.xml</loc>
-        <lastmod>2022-11-02T07:24:42.857Z</lastmod>
+        <lastmod>2022-11-02T10:45:21.660Z</lastmod>
     </sitemap>
 
     <sitemap>
@@ -12,13 +12,8 @@
     </sitemap>
 
     <sitemap>
-        <loc>https://bgpark82.github.io/category-sitemap.xml</loc>
-        <lastmod>2022-04-07T15:18:02.702Z</lastmod>
-    </sitemap>
-
-    <sitemap>
         <loc>https://bgpark82.github.io/tag-sitemap.xml</loc>
-        <lastmod>2022-04-07T15:18:02.702Z</lastmod>
+        <lastmod>2022-08-20T14:55:07.561Z</lastmod>
     </sitemap>
 
 </sitemapindex>

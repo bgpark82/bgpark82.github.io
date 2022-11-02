@@ -143,14 +143,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -225,6 +225,21 @@
                     <span class="tag-text">2022</span>
                 </span>
                 <ul>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <li >
+                    11-02
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    <a href="/2022/11/02/2022-04-07-call-by-value-call-by-reference/" style="color: #0085a1">
+                        <span>
+                            call by value와 call by reference 차이점
+                        </span>
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </li>
                 
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -1426,21 +1441,6 @@
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
                 </li>
                 
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    04-07
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2022/04/07/2022-04-07-call-by-value-call-by-reference/" style="color: #0085a1">
-                        <span>
-                            call by value와 call by reference 차이점
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
                 </ul>
             </div>
             
@@ -1493,8 +1493,6 @@
     <!-- no hr -->
     <h5><a href="/tags/">FEATURED TAGS</a></h5>
     <div class="tags">
-        
-            
         
             
         
@@ -1563,6 +1561,10 @@
     <ul>
       
         <li>
+          <a href="/2022/11/02/2022-04-07-call-by-value-call-by-reference/">call by value와 call by reference 차이점</a>
+        </li>
+      
+        <li>
           <a href="/2022/11/01/22-Generate-Parentheses/">22. Generate Parentheses</a>
         </li>
       
@@ -1576,10 +1578,6 @@
       
         <li>
           <a href="/2022/10/31/118-Pascal-s-Triangle/">118. Pascal&#39;s Triangle</a>
-        </li>
-      
-        <li>
-          <a href="/2022/10/26/1048-Longest-String-Chain/">1048. Longest String Chain</a>
         </li>
       
     </ul>

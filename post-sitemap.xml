@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://bgpark82.github.io/2022/11/02/2022-04-07-call-by-value-call-by-reference/</loc>
+        <lastmod>2022-11-02T10:45:21.660Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://bgpark82.github.io/2022/09/22/test/</loc>
         <lastmod>2022-11-02T07:24:42.857Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -649,14 +657,6 @@
     <url>
         <loc>https://bgpark82.github.io/2017/03/18/hexo-theme-beantech/</loc>
         <lastmod>2022-08-20T14:55:07.561Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://bgpark82.github.io/2022/04/07/2022-04-07-call-by-value-call-by-reference/</loc>
-        <lastmod>2022-04-07T15:18:02.702Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
