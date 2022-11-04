@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          102. Binary Tree Level Order Traversal - Paak&#39;s Blog
+          레거시 알림 서비스 개편 - Paak&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/11/02/레거시-알림-서비스-개편/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>102. Binary Tree Level Order Traversal</h1>
+                        <h1>레거시 알림 서비스 개편</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-10-03
+                            2022-11-02
                         </span>
                     </div>
                 
@@ -212,58 +212,95 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="conditions">Conditions</span></h2>
-<hr>
-<ul>
-<li>binary tree</li>
-<li>return <em>the level order traversal of its nodes’ values</em></li>
-<li>from left to right, level by level</li>
-</ul>
-<h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
-<hr>
-<p>we can use BFS algorithm. Time complexity is O(height of node)</p>
-<p>The problem is how to I know the node in queue was in the same level. <strong>The answer is that get the size of current queue which is the node in the same level and iterate in length of curren queue times</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">queue = [<span class="number">1</span>] <span class="comment">// level 0 -&gt; size 1 -&gt; iterate once</span></span><br><span class="line">queue = [<span class="number">2</span>,<span class="number">3</span>] <span class="comment">// level 1 -&gt; size 2 -&gt; iterate twice</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">    <span class="keyword">int</span> len = q.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        TreeNode node = q.poll();        </span><br><span class="line">				q.offer(node.left);</span><br><span class="line">        q.offer(node.right);    </span><br><span class="line">    &#125;            </span><br><span class="line">    ans.addlurn ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6536d54e-02ff-4b64-9ef6-116b55ffe9aa/Untitled.png" alt="Untitled"></p>
-<h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
-<hr>
+                <p>회사 서비스가 중국으로 진출하면서 wechat 서비스를 개발하면서 발생한 이슈에 대해 공유해보려 합니다.</p>
+<p>기존에 알림, AI 모델 변환 요청 등의 요청들은 응답을 기다리지 않고 처리할 수 있는 요청(fire and forget)으로 이벤트 방식으로 처리해왔습니다. Publish/Subscribe 방식의 이벤트를 사용하여 이벤트를 보내는 서비스와 관계없이 알림 요청, AI 변환 요청 서비스는 지정된 이벤트만 수신하는 방식으로 서비스간 디커플링하고 있었습니다.</p>
+<p>문제는 <strong>이벤트를 동기적</strong>으로 사용하고 있었습니다.</p>
+<h1><span id="전통적인-동기-방식의-코드">전통적인 동기 방식의 코드</span></h1>
+<p>기존의 동기 방식의 코드를 살펴보자</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaymentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RewardService rewardService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> InspectionService inspectionService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> NotificationService notificationService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buy</span><span class="params">(<span class="keyword">int</span> price)</span> </span>&#123;</span><br><span class="line">        rewardService.reward(price); <span class="comment">//</span></span><br><span class="line">        inspectionService.inspect(price);</span><br><span class="line">        notificationService.send(price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>문제는 2가지이다</p>
+<ol>
+<li>하나의 코드에 많은 시간이 지나면 다른 코드에 영향을 미친다.</li>
+<li>서비스간 의존성이 발생한다.</li>
+<li>fire and forget 방식의 메소드가 실패해도 모두 롤백해버린다</li>
+</ol>
+<blockquote>
+<p>트랜잭션 공부해서 해당 코드에서도 트랜잭션 가능한지 살펴보자</p>
+<p>@Async로도 트랜잭션 가능한지</p>
+<p><a href="https://woodcock.tistory.com/31" target="_blank" rel="noopener">https://woodcock.tistory.com/31</a></p>
+<p><a href="https://woodcock.tistory.com/40" target="_blank" rel="noopener">https://woodcock.tistory.com/40</a></p>
+<p><a href="https://velog.io/@gillog/Spring-Async-Annotation%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%A9%94%EC%86%8C%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0" target="_blank" rel="noopener">https://velog.io/@gillog/Spring-Async-Annotation비동기-메소드-사용하기</a></p>
+<p><a href="https://goodgid.github.io/SpringBoot-Why-doesn't-it-work-with-Async/" target="_blank" rel="noopener">https://goodgid.github.io/SpringBoot-Why-doesn’t-it-work-with-Async/</a></p>
+<p><a href="https://dzone.com/articles/effective-advice-on-spring-async-part-1" target="_blank" rel="noopener">https://dzone.com/articles/effective-advice-on-spring-async-part-1</a></p>
+<p><a href="https://brunch.co.kr/@springboot/401" target="_blank" rel="noopener">https://brunch.co.kr/@springboot/401</a></p>
+</blockquote>
+<h1><span id="동기방식의-이벤트-코드">동기방식의 이벤트 코드</span></h1>
+<p>기존의 동기 방식의 이벤트 코드를 살펴보자</p>
+<p>문제는 2가지이다.</p>
+<ol>
+<li>별도의 트랜잭션으로 제어를 할 수 없다</li>
+<li>하나의 이벤트 핸들러가 실패하면 다른 이벤트 핸들러에 영향을 미친다</li>
+</ol>
+<h1><span id="스프링이-제공하는-applicationeventpublisher">스프링이 제공하는 ApplicationEventPublisher</span></h1>
+<p>위의 문제를 해결할 수 있다</p>
+<ol>
+<li>별도 트랜잭션 제어</li>
+<li>하나의 이벤트 핸들러가 실패하면 다른 핸들러에 영향</li>
+</ol>
+<h1><span id="정리">정리</span></h1>
+<p>정리하면 다음과 같다</p>
+<h3><span id="요구사항">요구사항</span></h3>
 <ol>
 <li>
-<p>Mark the same level in queue</p>
-<ul>
-<li>Iterate length of current queue size times</li>
-</ul>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = q.size();</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            TreeNode node = q.poll();        </span><br><span class="line">    				q.offer(node.left);</span><br><span class="line">            q.offer(node.right);    </span><br><span class="line">        &#125;            </span><br><span class="line">        ans.add(list);</span><br><span class="line">    &#125;</span><br><span class="line">    ```ist);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>하나의 서비스가 에러가 발생해도 트랜잭션 처리</p>
+</li>
+<li>
+<p>의존성 제거</p>
 </li>
 </ol>
-<h2><span id="solution">Solution</span></h2>
-<hr>
-<pre><code class="language-java">class Solution {
-    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
-        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList();
-        
-        if(root == null) return ans;
-        
-        Queue&lt;TreeNode&gt; q = new ArrayDeque();
-        q.offer(root);
-        
-        while(!q.isEmpty()) {
-            int len = q.size();
-            
-            List&lt;Integer&gt; list = new ArrayList();
-            for(int i = 0; i &lt; len; i++) {
-                TreeNode node = q.poll();
-                list.add(node.val);
-                
-                if(node.left != null) q.offer(node.left);
-                if(node.right != null) q.offer(node.right);    
-            }            
-            ans.add(list);
-        }
-        
-        ret(
-</code></pre>
+<h3><span id="1-동기-순차">1. 동기 순차</span></h3>
+<p>장점 : 코드 읽기 용이하다</p>
+<p>단점 : 각 서비스간  의존성이 발생, 서비스 중 하나라도 에러가 발생하면 전체를 롤백</p>
+<p>해결</p>
+<ol>
+<li>REQUIRED_NEW로 실행
+<ul>
+<li>장점 : 새로운 트랜잭션을 사용할 수 있다</li>
+<li>단점 : 트랜잭션 커넥션을 추가로 생성하여 성능 이슈,</li>
+</ul>
+</li>
+<li>@Async
+<ul>
+<li>장점 : fire and forgot 코드에서 새로운 스레드를 생성하여 새로운 트랜잭션을 사용 (외부 트랜잭션이 suspense 되는지를 확인)</li>
+<li>단점 :</li>
+</ul>
+</li>
+</ol>
+<h3><span id="2-동기-이벤트">2. 동기 이벤트</span></h3>
+<p>장점 : 각 서비스간 의존성이 없다. 필요한 서비스는 구독(subscribe)만 하면된다</p>
+<p>단점 : 서비스 중 하나라도 에러가 발생하면 전체를 롤백한다</p>
+<p>해결</p>
+<ol>
+<li>REQUIRED_NEW로 실행
+<ul>
+<li>장점 : 새로운 트랜잭션을 사용할 수 있다</li>
+<li>단점 : 트랜잭션 커넥션을 추가로 생성하여 성능 이슈,</li>
+</ul>
+</li>
+<li>@Async
+<ul>
+<li>장점 : fire and forgot 코드에서 새로운 스레드를 생성하여 새로운 트랜잭션을 사용 (외부 트랜잭션이 suspense 되는지를 확인)</li>
+<li>단점 :</li>
+</ul>
+</li>
+</ol>
+<h3><span id="3-applicationeventpublisher">3. ApplicationEventPublisher</span></h3>
+<p>장점 :  각 서비스간 의존성이 없다. 필요한 서비스는 구독(subscribe)만 하면된다. 별도의 트랜잭션 처리가 가능</p>
+<p>단점 :</p>
+<p>해결</p>
+<ol>
+<li></li>
+</ol>
 
                 
 
@@ -272,12 +309,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2022/10/03/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/" data-toggle="tooltip" data-placement="top" title="105. Construct Binary Tree from Preorder and Inorder Traversal">&larr; Previous Post</a>
+                            <a href="/2022/11/02/이벤트/" data-toggle="tooltip" data-placement="top" title="이벤트">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2022/10/03/143-Reorder-List/" data-toggle="tooltip" data-placement="top" title="143. Reorder List">Next Post &rarr;</a>
+                            <a href="/2022/11/02/2022-04-07-call-by-value-call-by-reference/" data-toggle="tooltip" data-placement="top" title="call by value와 call by reference 차이점">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -307,7 +344,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Solution</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">전통적인 동기 방식의 코드</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">동기방식의 이벤트 코드</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">스프링이 제공하는 ApplicationEventPublisher</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">정리</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.1.</span> <span class="toc-nav-text">요구사항</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.2.</span> <span class="toc-nav-text">1. 동기 순차</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.3.</span> <span class="toc-nav-text">2. 동기 이벤트</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.4.</span> <span class="toc-nav-text">3. ApplicationEventPublisher</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>
@@ -354,8 +391,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
-    var disqus_url = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/11/02/레거시-알림-서비스-개편/";
+    var disqus_url = "https://bgpark82.github.io/2022/11/02/레거시-알림-서비스-개편/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

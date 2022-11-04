@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          102. Binary Tree Level Order Traversal - Paak&#39;s Blog
+          169. Majority Element - Paak&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/11/05/169-Majority-Element/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>102. Binary Tree Level Order Traversal</h1>
+                        <h1>169. Majority Element</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-10-03
+                            2022-11-05
                         </span>
                     </div>
                 
@@ -212,58 +212,43 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="conditions">Conditions</span></h2>
+                <h3><span id="requirements"><strong>Requirements</strong></span></h3>
 <hr>
 <ul>
-<li>binary tree</li>
-<li>return <em>the level order traversal of its nodes’ values</em></li>
-<li>from left to right, level by level</li>
+<li>return the majority element</li>
+<li>majority element is the element that appears more than n/2 times</li>
 </ul>
-<h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
+<h3><span id="edge-cases"><strong>Edge cases</strong></span></h3>
 <hr>
-<p>we can use BFS algorithm. Time complexity is O(height of node)</p>
-<p>The problem is how to I know the node in queue was in the same level. <strong>The answer is that get the size of current queue which is the node in the same level and iterate in length of curren queue times</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">queue = [<span class="number">1</span>] <span class="comment">// level 0 -&gt; size 1 -&gt; iterate once</span></span><br><span class="line">queue = [<span class="number">2</span>,<span class="number">3</span>] <span class="comment">// level 1 -&gt; size 2 -&gt; iterate twice</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">    <span class="keyword">int</span> len = q.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        TreeNode node = q.poll();        </span><br><span class="line">				q.offer(node.left);</span><br><span class="line">        q.offer(node.right);    </span><br><span class="line">    &#125;            </span><br><span class="line">    ans.addlurn ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6536d54e-02ff-4b64-9ef6-116b55ffe9aa/Untitled.png" alt="Untitled"></p>
-<h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
+<ul>
+<li>[3,2,3] → n/2 = 1.5 → 3 appears twice</li>
+<li>[1,2,3,5,1,2,1,1,2,1] → n/2 = 5 → 1 appears five times</li>
+</ul>
+<h3><span id="brute-force-approach-discussion-complexity"><strong>Brute force approach (Discussion + Complexity)</strong></span></h3>
+<hr>
+<p>We need to know the majority factor which is length of array divided by 2. Create the map to store the element as key and the number of appearance as value. find the largest number of value in map. Time complexity is O(n) and space complexity is O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> m = nums.length/<span class="number">2</span>;</span><br><span class="line">Map&lt;Integer, Integer&gt; nm = <span class="keyword">new</span> HashMap();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> n : nums) &#123;</span><br><span class="line">	nm.put(n, nm.getOrDefault(n, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">Map.Entry tmp = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(Map.Entry e : nm.entrySet()) &#123;</span><br><span class="line">	<span class="keyword">int</span> v = e.getValue();</span><br><span class="line">	<span class="keyword">if</span>(v &lt; m) <span class="keyword">continue</span>;</span><br><span class="line">	<span class="keyword">if</span>(v &gt; max) &#123;</span><br><span class="line">		max = v;</span><br><span class="line">		tmp = e;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> e.getKey();</span><br></pre></td></tr></table></figure>
+<p>We can make our code more readable. We don’t need to wait until the map filled. Whenever the value is greater than majority factor, we can return that value</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, Integer&gt; m = <span class="keyword">new</span> HashMap();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> n : nums) &#123;</span><br><span class="line">	m.put(n, m.getOrDefault(n, <span class="number">0</span>)+<span class="number">1</span>); <span class="comment">// increase value</span></span><br><span class="line">	<span class="keyword">if</span>(m.get(n) &gt; nums.length/<span class="number">2</span>) <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/54df2d4f-587d-445e-a1a4-3c5bfa8105d0/Untitled.png" alt="Untitled"></p>
+<h3><span id="optimised-approach-discussion-complexity-x-times"><strong>Optimised approach (Discussion + Complexity) …X times</strong></span></h3>
+<hr>
+<p>In array, majority element appears in the middle of array. For instance, if we sort the array  [1,2,3,1,1], it will be [1,1,1,2,3]. the element at the middle index which is 4/2 = 2 is 1 which is majority element. Time compexity is O(nlog(n)) and space complexity is O(1). Time complexity and space complexity can be trade off.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Arrays.sort(nums);</span><br><span class="line"><span class="keyword">return</span> nums[nums.length/<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f8c411cf-d3be-421c-be7e-69187c434a48/Untitled.png" alt="Untitled"></p>
+<h3><span id="coding"><strong>Coding</strong></span></h3>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; m = <span class="keyword">new</span> HashMap();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> n : nums) &#123;</span><br><span class="line">            m.put(n, m.getOrDefault(n, <span class="number">0</span>)+<span class="number">1</span>); </span><br><span class="line">            <span class="keyword">if</span>(m.get(n) &gt; nums.length/<span class="number">2</span>) <span class="keyword">return</span> n;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="dry-run"><strong>Dry Run</strong></span></h3>
+<hr>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/54df2d4f-587d-445e-a1a4-3c5bfa8105d0/Untitled.png" alt="Untitled"></p>
+<h3><span id="what-i-learned">What I learned</span></h3>
 <hr>
 <ol>
-<li>
-<p>Mark the same level in queue</p>
-<ul>
-<li>Iterate length of current queue size times</li>
-</ul>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = q.size();</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            TreeNode node = q.poll();        </span><br><span class="line">    				q.offer(node.left);</span><br><span class="line">            q.offer(node.right);    </span><br><span class="line">        &#125;            </span><br><span class="line">        ans.add(list);</span><br><span class="line">    &#125;</span><br><span class="line">    ```ist);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>We <strong>can optimize two loop to one loop</strong></li>
 </ol>
-<h2><span id="solution">Solution</span></h2>
-<hr>
-<pre><code class="language-java">class Solution {
-    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
-        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList();
-        
-        if(root == null) return ans;
-        
-        Queue&lt;TreeNode&gt; q = new ArrayDeque();
-        q.offer(root);
-        
-        while(!q.isEmpty()) {
-            int len = q.size();
-            
-            List&lt;Integer&gt; list = new ArrayList();
-            for(int i = 0; i &lt; len; i++) {
-                TreeNode node = q.poll();
-                list.add(node.val);
-                
-                if(node.left != null) q.offer(node.left);
-                if(node.right != null) q.offer(node.right);    
-            }            
-            ans.add(list);
-        }
-        
-        ret(
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> n : nums) &#123;</span><br><span class="line">		m.put(n, m.getOrDefault(n, <span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(Map.Entry e : m.entrySet()) &#123;</span><br><span class="line">		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> n : nums) &#123;</span><br><span class="line">	m.put(n, m.getOrDefault(n, <span class="number">0</span>)+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(m.get(n) &gt; nums.length/<span class="number">2</span>) <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -271,13 +256,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/10/03/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/" data-toggle="tooltip" data-placement="top" title="105. Construct Binary Tree from Preorder and Inorder Traversal">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/10/03/143-Reorder-List/" data-toggle="tooltip" data-placement="top" title="143. Reorder List">Next Post &rarr;</a>
+                            <a href="/2022/11/02/이벤트/" data-toggle="tooltip" data-placement="top" title="이벤트">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -307,7 +288,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Solution</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Requirements</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Edge cases</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Brute force approach (Discussion + Complexity)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Optimised approach (Discussion + Complexity) …X times</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Coding</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Dry Run</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">What I learned</span></a></li></ol>
         
         </div>
       </aside>
@@ -354,8 +335,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
-    var disqus_url = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/11/05/169-Majority-Element/";
+    var disqus_url = "https://bgpark82.github.io/2022/11/05/169-Majority-Element/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

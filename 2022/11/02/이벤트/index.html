@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          102. Binary Tree Level Order Traversal - Paak&#39;s Blog
+          이벤트 - Paak&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/">
+    <link rel="canonical" href="https://bgpark82.github.io/2022/11/02/이벤트/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>102. Binary Tree Level Order Traversal</h1>
+                        <h1>이벤트</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by bgpark on
-                            2022-10-03
+                            2022-11-02
                         </span>
                     </div>
                 
@@ -212,58 +212,60 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2><span id="conditions">Conditions</span></h2>
-<hr>
-<ul>
-<li>binary tree</li>
-<li>return <em>the level order traversal of its nodes’ values</em></li>
-<li>from left to right, level by level</li>
-</ul>
-<h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
-<hr>
-<p>we can use BFS algorithm. Time complexity is O(height of node)</p>
-<p>The problem is how to I know the node in queue was in the same level. <strong>The answer is that get the size of current queue which is the node in the same level and iterate in length of curren queue times</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">queue = [<span class="number">1</span>] <span class="comment">// level 0 -&gt; size 1 -&gt; iterate once</span></span><br><span class="line">queue = [<span class="number">2</span>,<span class="number">3</span>] <span class="comment">// level 1 -&gt; size 2 -&gt; iterate twice</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">    <span class="keyword">int</span> len = q.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        TreeNode node = q.poll();        </span><br><span class="line">				q.offer(node.left);</span><br><span class="line">        q.offer(node.right);    </span><br><span class="line">    &#125;            </span><br><span class="line">    ans.addlurn ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6536d54e-02ff-4b64-9ef6-116b55ffe9aa/Untitled.png" alt="Untitled"></p>
-<h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
-<hr>
+                <p>이벤트 기반 아키텍처를 알아보기 전에 먼저 Blocking과 Non Blocking에 대한 차이를 먼저 알아보자</p>
+<h2><span id="blocking">Blocking</span></h2>
+<p>정의 : <strong>코드의 흐름이 작업이 완료될 때까지 기다리는 것</strong>을 말한다</p>
+<p>예를들어, 4줄의 코드가 있다고 할 때 각 라인의 코드들이 실행되고 완료될 때까지 다른 코드들은 기다리고 있어야 한다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">blocking</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  pay(); </span><br><span class="line">  Reward(); <span class="comment">// pay라는 메소드가 완료될 때까지 reward는 실행되지 않고 기다리고 있다.</span></span><br><span class="line">  sendSms();</span><br><span class="line">  sendAlimtalk();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>위의 코드를 보면 pay라는 메소드가 실행되면 완료될 때까지 reward라는 메소드는 실행되지 않고 blocking된다</p>
+<p>장점은 pay라는 메소드가 실행이 되고 reward, sendSms, sendAlimtalk으로 <strong>메소드가 차례로 실행될 것이라고 기대</strong>를 할 수 있다.</p>
+<p>문제는 pay라는 메소드가 외부 PG사를 통해 처리되는 메소드이고, PG사의 이슈로 인해 장시간동안 완료되지 않는다면 하위 메소드들은 또한 실행되지 않고 기다리게 된다. <strong>메소드의 처리 시간에 따라 응답 시간이 길어져</strong> 좋지 못한 사용자 경험을 제공하게 된다.</p>
+<h2><span id="non-blocking">Non Blocking</span></h2>
+<p>정의 : <strong>코드의 흐름이 작업이 완료될때까지 기다리지 않고 다음 코드를 실행</strong>할 수 있는 것을 말한다</p>
+<p>예를들어 위와 같은 예시이지만 비동기라고 가정해보자</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nonBlocking</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  pay(); </span><br><span class="line">  asyncReward(); <span class="comment">// pay라는 메소드가 완료될 때까지 reward는 실행되지 않고 기다리고 있다.</span></span><br><span class="line">  asyncSendSms();</span><br><span class="line">  asyncSendAlimtalk();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>위의 코드는 block 예제와 동일하지만 reward, sendSms, sendAlimtalk이 비동기적으로 실행된다. 즉, pay 메소드가 실행된 이후 asyncReward를 기다리지 않고 asyncSendSms와 asyncSendAlimtalk이 바로 실행되게 된다.</p>
+<p>장점은 메소드가 종료될때까지 기다리지 않고 바로 실행하기 때문에 <strong>실행 시간을 줄일 수 있다</strong>.</p>
+<p>단점은 <strong>blocking 방식에 비해 기대값이 일정하지 않다</strong>. 왜냐하면 비동기 메소드는 대부분 반환값이 없거나 에러를 발생시키지 않기 때문이다.</p>
+<h2><span id="event">Event</span></h2>
+<p>정의 : <strong>어플리케이션에서 Input과 Ouput</strong>를 뜻한다</p>
+<p>예를들어, 클라이언트와 서버간의 요청과 응답사이에 수많은 이벤트들이 발생된다</p>
+<h2><span id="event-stream">Event Stream</span></h2>
+<p>정의 : <strong>많은 수의 Event의 흐름</strong>을 뜻한다</p>
+<p>예를들어, 많은 수의 트랜잭션 이벤트를 다루거나, 쇼핑 서비스에서 사용자의 이벤트 등을 순차적으로 처리할 수 있도록 만든다.</p>
+<h2><span id="event-driven-architecture">Event Driven Architecture</span></h2>
+<p>정의 : <strong>non-blocking arhictecture</strong>라고도 부른다. 이벤트 기반 시스템에서는 모든 것들이 스트림으로 처리된다</p>
+<p>예를들어, <strong>분산환경에서 병렬적으로 대용량 처리</strong>를 하거나 <strong>확장성이 필요한 서비스</strong>에서 사용된다.</p>
+<p><img src="https://raw.githubusercontent.com/bgpark82/image/master/images/image-20221102222219840.png" alt="image-20221102222219840"></p>
+<h2><span id="asynchronous-mircoservice">Asynchronous Mircoservice</span></h2>
+<p>두가지 케이스가 존재한다</p>
 <ol>
-<li>
-<p>Mark the same level in queue</p>
-<ul>
-<li>Iterate length of current queue size times</li>
-</ul>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = q.size();</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            TreeNode node = q.poll();        </span><br><span class="line">    				q.offer(node.left);</span><br><span class="line">            q.offer(node.right);    </span><br><span class="line">        &#125;            </span><br><span class="line">        ans.add(list);</span><br><span class="line">    &#125;</span><br><span class="line">    ```ist);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>요청을 처리하는 동안 다른 마이크로 서비스에 요청을 하지 않는다</li>
+<li>요청을 처리하는 동안 다른 마이크로 서비스에 요청을 하고 기다리지 않는다</li>
 </ol>
-<h2><span id="solution">Solution</span></h2>
-<hr>
-<pre><code class="language-java">class Solution {
-    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
-        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList();
-        
-        if(root == null) return ans;
-        
-        Queue&lt;TreeNode&gt; q = new ArrayDeque();
-        q.offer(root);
-        
-        while(!q.isEmpty()) {
-            int len = q.size();
-            
-            List&lt;Integer&gt; list = new ArrayList();
-            for(int i = 0; i &lt; len; i++) {
-                TreeNode node = q.poll();
-                list.add(node.val);
-                
-                if(node.left != null) q.offer(node.left);
-                if(node.right != null) q.offer(node.right);    
-            }            
-            ans.add(list);
-        }
-        
-        ret(
-</code></pre>
+<p><img src="https://raw.githubusercontent.com/bgpark82/image/master/images/image-20221102223315660.png" alt="image-20221102223315660"></p>
+<p><img src="https://raw.githubusercontent.com/bgpark82/image/master/images/image-20221102223306529.png" alt="image-20221102223306529"></p>
+<p><img src="https://raw.githubusercontent.com/bgpark82/image/master/images/image-20221102224324215.png" alt="image-20221102224324215"></p>
+<p>예를들어, 위의 마이크로서비스들은 모두 비동기적으로 요청이 가능하다.</p>
+<ul>
+<li>The <em>order process</em> <strong>generates the orders</strong>.</li>
+<li>An <em>invoice</em> and a <em>shipping</em> <strong>data record is produced</strong> for the order.</li>
+<li>The <em>registration</em> microservice <strong>adds new customers to the system</strong>.</li>
+<li>The <em>listing</em> microservice is <strong>responsible for new goods</strong>.</li>
+</ul>
+<h2><span id="message-oriented-middleware">Message Oriented Middleware</span></h2>
+<p>정의 : <strong>MOM은 메세지를 중간에 처리하는 미들웨어</strong>이다</p>
+<p>장점은 <strong>서비스 간의 디커플링이 가능</strong>하다. 각 서비스는 메세지를 MOM(Message Oriented Middleware)로 보내기만하면 수신하는 서비스가 메세지를 받아 사용할 뿐 누가 보냈는지는 알지 못한다. 그렇기 때문에 <strong>서비스 디스커버리 (ex. zuul)도 필요가 없다.</strong> 또한 <strong>로드 밸런싱도 줄일 수 있다</strong>.</p>
+<p>단점은 <strong>모든 요청을 다루는 복잡한 소프트웨어</strong>이다. 그래서 항상 고가용성과 처리량을 유지하기 위해 많은 지식과 노하우가 필요하다</p>
+<p>종류는 Java Messaging Service, Message Queue Protocol, MQTT 등이 있다.</p>
+<h3><span id="1-jms-java-messaging-service">1. JMS (Java Messaging Service)</span></h3>
+<p>정의 : <strong>Java 진영에서 제공하는 MOM API</strong>이다.</p>
+<p>예를들어, Apache ActiveMQ, IBM MQ 등이 있다.</p>
+<h3><span id="2-advanced-message-queuing-protocol">2. Advanced Message Queuing Protocol</span></h3>
+<p>정의 : AMQP는 <strong>TCP/IP 레벨에서의 MOM 네트워크 프로토콜</strong>이다</p>
+<p>예를들어, RabbitMQ가 대표적인 AMQP이다.</p>
+<h3><span id="3-mqtt">3. MQTT</span></h3>
+<p>정의 : MQTT는 <strong>IoT에서 사용되는 메세지 프로토콜</strong>이다</p>
 
                 
 
@@ -272,12 +274,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2022/10/03/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/" data-toggle="tooltip" data-placement="top" title="105. Construct Binary Tree from Preorder and Inorder Traversal">&larr; Previous Post</a>
+                            <a href="/2022/11/05/169-Majority-Element/" data-toggle="tooltip" data-placement="top" title="169. Majority Element">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2022/10/03/143-Reorder-List/" data-toggle="tooltip" data-placement="top" title="143. Reorder List">Next Post &rarr;</a>
+                            <a href="/2022/11/02/레거시-알림-서비스-개편/" data-toggle="tooltip" data-placement="top" title="레거시 알림 서비스 개편">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -307,7 +309,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Solution</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Blocking</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Non Blocking</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Event</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Event Stream</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Event Driven Architecture</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Asynchronous Mircoservice</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Message Oriented Middleware</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">1. JMS (Java Messaging Service)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">2. Advanced Message Queuing Protocol</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">7.3.</span> <span class="toc-nav-text">3. MQTT</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -354,8 +356,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
-    var disqus_url = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
+    var disqus_identifier = "https://bgpark82.github.io/2022/11/02/이벤트/";
+    var disqus_url = "https://bgpark82.github.io/2022/11/02/이벤트/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
