@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -214,10 +214,47 @@
 
                 <p>회사 서비스가 중국으로 진출하면서 wechat 서비스를 개발하면서 발생한 이슈에 대해 공유해보려 합니다.</p>
 <p>기존에 알림, AI 모델 변환 요청 등의 요청들은 응답을 기다리지 않고 처리할 수 있는 요청(fire and forget)으로 이벤트 방식으로 처리해왔습니다. Publish/Subscribe 방식의 이벤트를 사용하여 이벤트를 보내는 서비스와 관계없이 알림 요청, AI 변환 요청 서비스는 지정된 이벤트만 수신하는 방식으로 서비스간 디커플링하고 있었습니다.</p>
-<p>문제는 <strong>이벤트를 동기적</strong>으로 사용하고 있었습니다.</p>
+<p>문제는 이벤트 중 하나에 에러가 발생하면 모든 데이터를 롤백한다는 것입니다.</p>
+<h1><span id="요구사항">요구사항</span></h1>
+<p>순차 동기</p>
+<ol>
+<li>
+<p>서비스 중 하나에 에러가 발생해도 트랜잭션 정상 처리 -&gt; @Async @EventListener</p>
+</li>
+<li>
+<p>알림 서비스 중 에러가 발생해도 트랜잭션 정상 처리 -&gt; @Async</p>
+</li>
+<li>
+<p>의존성 제거 -&gt; EventHandler</p>
+</li>
+</ol>
+<p>이벤트 동기</p>
+<ol>
+<li>
+<p>서비스 중 하나에 에러가 발생해도 트랜잭션 정상 처리 -&gt; @Async @EventListener</p>
+</li>
+<li>
+<p>알림 서비스 중 에러가 발생해도 트랜잭션 정상 처리 -&gt; @Async</p>
+</li>
+<li>
+<p>의존성 제거 -&gt; EventHandler</p>
+</li>
+</ol>
+<p>이벤트 비동기</p>
+<ol>
+<li>
+<p>서비스 중 하나에 에러가 발생해도 트랜잭션 정상 처리 -&gt; @Async @EventListener</p>
+</li>
+<li>
+<p>알림 서비스 중 에러가 발생해도 트랜잭션 정상 처리 -&gt; @Async (왜…?)</p>
+</li>
+<li>
+<p>의존성 제거 -&gt; EventHandler</p>
+</li>
+</ol>
 <h1><span id="전통적인-동기-방식의-코드">전통적인 동기 방식의 코드</span></h1>
 <p>기존의 동기 방식의 코드를 살펴보자</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaymentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RewardService rewardService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> InspectionService inspectionService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> NotificationService notificationService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buy</span><span class="params">(<span class="keyword">int</span> price)</span> </span>&#123;</span><br><span class="line">        rewardService.reward(price); <span class="comment">//</span></span><br><span class="line">        inspectionService.inspect(price);</span><br><span class="line">        notificationService.send(price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaymentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> PaymentRepository paymentRepository;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RewardService rewardService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> InspectionService inspectionService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> NotificationService notificationService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buy</span><span class="params">(<span class="keyword">int</span> price)</span> </span>&#123;</span><br><span class="line">      	paymentRepository.save(price);</span><br><span class="line">        rewardService.reward(price); </span><br><span class="line">        inspectionService.inspect(price);</span><br><span class="line">        notificationService.send(price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>문제는 2가지이다</p>
 <ol>
 <li>하나의 코드에 많은 시간이 지나면 다른 코드에 영향을 미친다.</li>
@@ -233,6 +270,7 @@
 <p><a href="https://goodgid.github.io/SpringBoot-Why-doesn't-it-work-with-Async/" target="_blank" rel="noopener">https://goodgid.github.io/SpringBoot-Why-doesn’t-it-work-with-Async/</a></p>
 <p><a href="https://dzone.com/articles/effective-advice-on-spring-async-part-1" target="_blank" rel="noopener">https://dzone.com/articles/effective-advice-on-spring-async-part-1</a></p>
 <p><a href="https://brunch.co.kr/@springboot/401" target="_blank" rel="noopener">https://brunch.co.kr/@springboot/401</a></p>
+<p><a href="https://velog.io/@jeongyunsung/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%ED%95%B4%EB%B6%80%ED%95%99-Async-EnableAsync-AsyncAnnotationBeanPostProcessor" target="_blank" rel="noopener">https://velog.io/@jeongyunsung/스프링부트-해부학-Async-EnableAsync-AsyncAnnotationBeanPostProcessor</a></p>
 </blockquote>
 <h1><span id="동기방식의-이벤트-코드">동기방식의 이벤트 코드</span></h1>
 <p>기존의 동기 방식의 이벤트 코드를 살펴보자</p>
@@ -247,6 +285,12 @@
 <li>별도 트랜잭션 제어</li>
 <li>하나의 이벤트 핸들러가 실패하면 다른 핸들러에 영향</li>
 </ol>
+<blockquote>
+<p>ApplicationEventPublisher 구조</p>
+<p><a href="https://velog.io/@jeongyunsung/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%ED%95%B4%EB%B6%80%ED%95%99-Event1-EventListener-EventPublisher" target="_blank" rel="noopener">https://velog.io/@jeongyunsung/스프링부트-해부학-Event1-EventListener-EventPublisher</a></p>
+</blockquote>
+<p>등록</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">registerListeners</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// Register statically specified listeners first.</span></span><br><span class="line">		<span class="keyword">for</span> (ApplicationListener&lt;?&gt; listener : getApplicationListeners()) &#123;</span><br><span class="line">			getApplicationEventMulticaster().addApplicationListener(listener);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Do not initialize FactoryBeans here: We need to leave all regular beans</span></span><br><span class="line">		<span class="comment">// uninitialized to let post-processors apply to them!</span></span><br><span class="line">		String[] listenerBeanNames = getBeanNamesForType(ApplicationListener<span class="class">.<span class="keyword">class</span>, <span class="title">true</span>, <span class="title">false</span>)</span>;</span><br><span class="line">		<span class="keyword">for</span> (String listenerBeanName : listenerBeanNames) &#123;</span><br><span class="line">			getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Publish early application events now that we finally have a multicaster...</span></span><br><span class="line">		Set&lt;ApplicationEvent&gt; earlyEventsToProcess = <span class="keyword">this</span>.earlyApplicationEvents;</span><br><span class="line">		<span class="keyword">this</span>.earlyApplicationEvents = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">if</span> (!CollectionUtils.isEmpty(earlyEventsToProcess)) &#123;</span><br><span class="line">			<span class="keyword">for</span> (ApplicationEvent earlyEvent : earlyEventsToProcess) &#123;</span><br><span class="line">				getApplicationEventMulticaster().multicastEvent(earlyEvent);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 <h1><span id="정리">정리</span></h1>
 <p>정리하면 다음과 같다</p>
 <h3><span id="요구사항">요구사항</span></h3>
@@ -278,7 +322,7 @@
 </ol>
 <h3><span id="2-동기-이벤트">2. 동기 이벤트</span></h3>
 <p>장점 : 각 서비스간 의존성이 없다. 필요한 서비스는 구독(subscribe)만 하면된다</p>
-<p>단점 : 서비스 중 하나라도 에러가 발생하면 전체를 롤백한다</p>
+<p>단점 : 서비스 중 하나라도 에러가 발생하면 전체를 롤백한다. 외부 트랜잭션이 완료 이후에 이벤트를 발생할 수 없다</p>
 <p>해결</p>
 <ol>
 <li>REQUIRED_NEW로 실행
@@ -344,7 +388,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">전통적인 동기 방식의 코드</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">동기방식의 이벤트 코드</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">스프링이 제공하는 ApplicationEventPublisher</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">정리</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.1.</span> <span class="toc-nav-text">요구사항</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.2.</span> <span class="toc-nav-text">1. 동기 순차</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.3.</span> <span class="toc-nav-text">2. 동기 이벤트</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.0.4.</span> <span class="toc-nav-text">3. ApplicationEventPublisher</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">요구사항</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">전통적인 동기 방식의 코드</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">동기방식의 이벤트 코드</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">스프링이 제공하는 ApplicationEventPublisher</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">정리</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.0.1.</span> <span class="toc-nav-text">요구사항</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.0.2.</span> <span class="toc-nav-text">1. 동기 순차</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.0.3.</span> <span class="toc-nav-text">2. 동기 이벤트</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">5.0.4.</span> <span class="toc-nav-text">3. ApplicationEventPublisher</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>
