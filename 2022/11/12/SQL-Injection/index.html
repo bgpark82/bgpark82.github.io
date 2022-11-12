@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -212,7 +212,8 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>SQL Injection은 <strong>데이터베이스에 악의적인 SQL문을 삽입하여 공격</strong>하는 행위이다</p>
+                <h2><span id="정의">정의</span></h2>
+<p>SQL Injection은 <strong>데이터베이스에 악의적인 SQL문을 삽입하여 공격</strong>하는 행위이다</p>
 <h2><span id="종류">종류</span></h2>
 <h3><span id="1-error-based-sql-injection">1. Error based SQL Injection</span></h3>
 <p>Error based SQL Injection은 <strong>쿼리문의 논리적인 에러</strong>를 이용하여 악의적인 SQL을 주입하는 방법이다</p>
@@ -220,7 +221,8 @@
 <p><code>1=1</code>은 항상 참이므로 <code>member</code>의 모든 내용을 조회가능하다</p>
 <h2><span id="대응">대응</span></h2>
 <h3><span id="1-parameter-binding">1. Parameter Binding</span></h3>
-<p>SQL Injection은 <strong>Parameter Binding</strong>으로 해결가능하다</p>
+<p>SQL Injection은 <strong>Parameter Binding</strong>으로 해결가능하다<br>
+JDBC는 <code>PrepareStatement</code>를 제공하여 타입에 맞는 파라미터만 바인딩할 수 있게한다</p>
 <p>MyBatis에서는 SQL Mapper에 <code>$</code> 대신  <code>#</code> 문법을 사용한다. <code>$</code>문법은 Parameter를 쿼리문에 바로 입력되고 <code>#</code> 문법은 Parameter에 <code>'</code>로 감싸기 때문에 SQL Injection이 불가능하다</p>
 <p>JPA의 API는 내부적으로 Parameter Binding을 하고 있다. 하지만 쿼리문을 직접 사용한다면 SQL Injection의 대상이 될 수도 있다</p>
 <h2><span id="출처">출처</span></h2>
@@ -267,7 +269,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">종류</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1. Error based SQL Injection</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">대응</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">1. Parameter Binding</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">출처</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">정의</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">종류</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">1. Error based SQL Injection</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">대응</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">1. Parameter Binding</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">출처</span></a></li></ol>
         
         </div>
       </aside>
