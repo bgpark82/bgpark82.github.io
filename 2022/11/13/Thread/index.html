@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Thread - Paak&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://bgpark82.github.io/2022/11/13/Thread/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('null')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>Thread</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by bgpark on
+                            2022-11-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Paak&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1><span id="thread">Thread</span></h1>
+<p>스레드는 <strong>프로세스 내 실행 흐름의 단위</strong>이다</p>
+<p>Thread는 JVM의 Runtime Data Area에서 Stack에 집중된다</p>
+<p>예전에는 JVM Stack과 Native Stack을 구분해서 사용하였다</p>
+<p>왜냐하면 JVM Thread와 OS Thread가 나누어져 있었기 때문이다</p>
+<p>지금은 <strong>Stack 영역에 JVM용 Frame과 OS용 Frame을 적재</strong>해서 사용한다</p>
+<blockquote>
+<p>초기 자바는 JVM이 직접 Thread를 생성하고 관리했다</p>
+<p>JVM이 관리하는 Thread를 Green Thread, OS가 관리하는 Thread를 White Thread(=Native Thread)라고 불렀다</p>
+<p>하지만 Green Thread는 White Thread를 시분할 방식으로 나눠 사용했기 때문에 성능이 좋지않았다</p>
+<p>그래서 1.4버전부터는 <strong>OS Thread만 사용</strong>하기 시작했다</p>
+<p><strong>Native Thread는 OS가 관리하므로 JVM이 Thread를 자유롭게 관리할 수 없는 단점</strong>도 있다</p>
+</blockquote>
+<h1><span id="synchronization-동작-방식">Synchronization 동작 방식</span></h1>
+<p>synchronization은 <strong>스레드 간 실행 순서를 제어할 수 있는 기술</strong>을 말한다</p>
+<p>자바는 Monitor라는 Synchronization(=동기화) 메커니즘을 사용한다</p>
+<p>Monitor는 <strong>객체나 코드 블록에서 하나의 Thread만 접근할 수 있는 Lock</strong>을 뜻한다</p>
+<p>Monitor는 **상호배제(=Mutual Exclusion)**와 **공동작업(=Cooperation)**을 위해 사용된다</p>
+<h3><span id="1-mutual-exclusion-mutex">1. Mutual Exclusion (=Mutex)</span></h3>
+<p>Mutual Exclusion은 <strong>Thread가 공유데이터를 사용하는 동안 다른 Thread가 사용하지 못하도록 배제</strong>하는 것을 뜻한다</p>
+<p>공유 데이터는 Runtime Data Area 중 Thread가 공유가능한 <strong>Method Area</strong>와 <strong>Heap</strong> 영역을 뜻한다</p>
+<p>특히, Thread가 수정이 가능한 <strong>Heap의 인스턴스 변수</strong>와 <strong>Method Area의 클래스 변수</strong>가 대표적이다</p>
+<blockquote>
+<p>데이터베이스의 동기화는 update와 delete 할 때만 동기화 할 수 있다</p>
+<p>자바의 동기화는 <strong>모든 경우에 동기화가 적용</strong>된다</p>
+</blockquote>
+<h3><span id="2-critical-section">2. Critical Section</span></h3>
+<p><strong>Synchronization이 필요한 영역</strong>을 Critical Section이라고 부른다</p>
+<p>즉, <strong>공유 데이터를 동기화하기 위해 Thread는 Critical Section으로 들어가야 한다</strong></p>
+<p>이때 Monitor라는 Lock을 획득해야 Critical Section 내 데이터에 접근하여 수정할 수 있다</p>
+<p>모든 Object의 Header에는 Lock Counter를 가지고 있다</p>
+<p>Thread가 Lock을 획득하면 Lock Count를 1 증가시키고, Lock을 놓으면 1 감소시킨다</p>
+<p>Object의 Lock Count가 0이면 다른 Thread가 Lock을 획득할 수 있다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// synchronized method</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// synchronized statement</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123; </span><br><span class="line">  <span class="keyword">synchronized</span>(obj) &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>자바의 Critical Section은 <strong>Synchronized Statement</strong>와 <strong>Synchronized Method</strong>가 존재한다</p>
+<h3><span id="2-1-synchronized-statement">2-1. Synchronized Statement</span></h3>
+<p>Synchronized Statement는 메소드 내부 코드 블록에 <code>synchronized</code> 키워드를 사용한다</p>
+<p>Synchronized Method는 메소드에 <code>synchronized</code> 키워드를 사용한다</p>
+<p>즉, <code>synchronized</code> 블록을 접근하기 위해는 Monitor Lock을 획득해야 한다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sync</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> a;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">syncBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">      a = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Code:</span><br><span class="line">  stack=<span class="number">2</span>, locals=<span class="number">3</span>, args_size=<span class="number">1</span></span><br><span class="line">     <span class="number">0</span>: aload_0</span><br><span class="line">     <span class="number">1</span>: dup</span><br><span class="line">     <span class="number">2</span>: astore_1</span><br><span class="line">     <span class="number">3</span>: monitorenter <span class="comment">// monitor 락 획득</span></span><br><span class="line">     <span class="number">4</span>: aload_0</span><br><span class="line">     <span class="number">5</span>: iconst_1</span><br><span class="line">     <span class="number">6</span>: putfield      </span><br><span class="line">     <span class="number">9</span>: aload_1</span><br><span class="line">    <span class="number">10</span>: monitorexit <span class="comment">// monitor 락 해제</span></span><br><span class="line">    <span class="number">11</span>: goto          <span class="number">19</span></span><br><span class="line">    <span class="number">14</span>: astore_2</span><br><span class="line">    <span class="number">15</span>: aload_1</span><br><span class="line">    <span class="number">16</span>: monitorexit <span class="comment">// exception이 발생하면 예외 발생 직전에 monitor 락 해제</span></span><br><span class="line">    <span class="number">17</span>: aload_2</span><br><span class="line">    <span class="number">18</span>: athrow</span><br><span class="line">    <span class="number">19</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p><code>synchronized</code> 블록에 접근하면 <code>moniterenter</code>고 <code>monitorexit</code> 이라는 Opcode를 확인할 수 있다</p>
+<p><code>monitorenter</code>가 실행되면 <strong>Stack의 Object Reference로 참조된 인스턴스에 대해 Lock을 획득</strong>한다</p>
+<p>인스턴스의 Lock Count를 1 증가 시키고 Lock을 획득한다</p>
+<p>만약 다른 Thread가 Lock을 획득할 수 없으면 Lock을 획득할 때까지 Block 상태로 대기한다</p>
+<p><code>monitorexit</code>이 실행되면 <strong>Lock Count를 1 감소시키고 0이되면 Lock을 해제</strong>한다</p>
+<p>두번째 <code>monitorexit</code> 은 예외발생 시, 예외발생 직전에 Lock을 해제시키기 위해 사용된다 (try-catch와 비슷한 역할)</p>
+<p>Synchronized Statement는 런타임에 Monitor Lock을 획득한다</p>
+<h3><span id="2-2-synchronized-method">2-2. Synchronized Method</span></h3>
+<p>Synchronized Mehod는 <strong>메소드를 선언할 때 <code>synchronized</code>를 사용하여 메소드 전체를 Ciritial Section으로 지정</strong>한다</p>
+<p>즉, 메소드를 호출할 때 Monitor Lock을 획득한다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sync</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> a;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">syncBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      a = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Code:</span><br><span class="line">  stack=<span class="number">2</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">     <span class="number">0</span>: aload_0</span><br><span class="line">     <span class="number">1</span>: iconst_1</span><br><span class="line">     2: putfield      #2                  // Field a:I</span><br><span class="line">     <span class="number">5</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>Synchronized Statement와 다르게 바이트 코드에는 Monitor Lock가 명시되지 않는다</p>
+<p>Synchronized Method의 Monitor Lock 획득은 메소드의 Symbolic Reference를 Resolution하는 과정에서 결정된다</p>
+<p>Synchronized Method는 메소드의 내용이 Ciritical Section이 아니라 <strong>메소드의 호출 자체가 Ciritical Section</strong>이 되기 때문이다</p>
+<p><strong>인스턴스 메소드의 경우는 <code>this</code>의 Lock을 획득</strong>하고, <strong>클래스 메소드의 경우 Class에 대해 Lock을 획득</strong>한다</p>
+<h2><span id="3-cooperation">3. Cooperation</span></h2>
+<p>Cooperation은 <strong>Thread가 Monitor Lock을 해제할 때, 다른 Thread에게 알려주어 Monitor Lock을 획득하도록 협동</strong>(=Cooperation)하는 작업이다</p>
+<p>자바에서는 <code>wait-notify</code> 형태의 Monitor Lock을 사용한다</p>
+<p><img src="https://raw.githubusercontent.com/bgpark82/image/master/images/image-20220418222746986.png" alt="image-20220418222746986"></p>
+<p>Entry Set에 대기하는 스레드는 Ciritical Section에 스레드가 존재하지 않으면 지체없이 Monitor Lock을 획득한다</p>
+<p>작업을 다 끝내면 객체가 <code>wait()</code> 메서드롤 호출하고 해당 스레드는 Monitor를 잠시 놓고 Wait Set에서 기다린다</p>
+<p>다른 스레드가 Ciritical Section에서 작업을 하고 객체의 <code>notify()</code> 메서드를 실행하여 Wait Set에 대기중이던 스레드를 깨운다</p>
+<p>이때 <code>notify()</code> 시점에 Ciritical Section에 있던 스레드가 Monitor Lock을 release해야만 깨워진 스레드가 Monitor Lock을 획득할 수 있다</p>
+<p>정리하면 스레드가 객체의 <code>wait()</code>만 수행하고 Wait Set에 들어가면 Monitor Lock을 획득은 <strong>Entry Set의 스레드들의 경쟁</strong>을 통해 가능하다</p>
+<p>스레드가 객체의 <code>wait()</code> 이전에 <code>notify()</code>를 수행하면 <strong>Entry Set과 Wait Set의 스레드들이 경쟁</strong>하게 된다</p>
+<blockquote>
+<p><code>notify()</code>와 <code>notifyAll()</code> 차이점</p>
+<p><code>notify()</code>는 Wait Set의 스레드 중 <strong>임의의 한 스레드만 Monitor Lock 획득 경쟁에 참여</strong>하게 하고</p>
+<p><code>notifyAll()</code>은 Wait Set의 <strong>모든 스레드가 Monitor Lock 획득 경쟁에 참여</strong>하게 한다.</p>
+</blockquote>
+<h2><span id="4-lock">4. Lock</span></h2>
+<p>자바의 Lock은 Heavy Weight Lock과 Light Weight Lock으로 나뉜다</p>
+<p>Heavy Weight Lock은 <strong>Monitor Lock</strong>을 의미한다</p>
+<p>Monitor Lock은 각 객체에 대해 OS Mutex와 조건 변수 등으로 다소 무겁게 구현되어 있다</p>
+<blockquote>
+<p>OS Metex?</p>
+</blockquote>
+<p>Light Weight Lock은 <strong>Atomic Lock</strong>을 이용한다</p>
+<p>Atomic은 특정 스레드가 실행 중에는 다른 스레드로 부터 간섭받지 않는 것을 말한다</p>
+<p><strong>OS Mutex 같이 리소스를 사용하지 않고 동기화 처리</strong>를 할 수 있다</p>
+<blockquote>
+<p>자바의 Atomic은 CAS 알고리즘을 사용한다 (Compared and Swap)</p>
+<p>멀티 스레드 환경에서 CPU는 메인 메모리의 변수가 아닌 CPU 캐시 영역 값을 참조한다</p>
+<p>이때, 메인 메모리 값과 CPU 캐시 값이 차이날 수 있다</p>
+<p>CAS 알고리즘은 <strong>스레드에 저장된 값과 메인 메모리 값이 같으면 새로운 값</strong>으로 교체되고, 다르면 재시도한다</p>
+<p><code>volatile</code> 키워드는 <strong>CPU 캐시가 아닌 메인 메모리의 값을 참조</strong>한다</p>
+</blockquote>
+<p><a href="https://beomseok95.tistory.com/225" target="_blank" rel="noopener">https://beomseok95.tistory.com/225</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2022/11/13/Runnable-Callable/" data-toggle="tooltip" data-placement="top" title="Runnable-Callable">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Thread</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Synchronization 동작 방식</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.0.1.</span> <span class="toc-nav-text">1. Mutual Exclusion (=Mutex)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.0.2.</span> <span class="toc-nav-text">2. Critical Section</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.0.3.</span> <span class="toc-nav-text">2-1. Synchronized Statement</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.0.4.</span> <span class="toc-nav-text">2-2. Synchronized Method</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">3. Cooperation</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">4. Lock</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://bgpark.tistory.com" target="_blank">Byeonggil Park&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "https://bgpark82.github.io/2022/11/13/Thread/";
+    var disqus_url = "https://bgpark82.github.io/2022/11/13/Thread/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/bgpark82">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/byeonggilpark">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; bgpark 2022 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://bgpark82.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://bgpark82.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

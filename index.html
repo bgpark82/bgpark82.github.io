@@ -136,6 +136,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -144,13 +151,6 @@
                         
                         <li>
                             <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -210,6 +210,34 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2022/11/13/Thread/">
+        <h2 class="post-title">
+            Thread
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Thread
+스레드는 프로세스 내 실행 흐름의 단위이다
+Thread는 JVM의 Runtime Data Area에서 Stack에 집중된다
+예전에는 JVM Stack과 Native Stack을 구분해서 사용하였다
+왜냐하면 JVM Thread와 OS Thread가 나누어져 있었기 때문이다
+지금은 Stack 영역에 JVM용 Frame과 OS용 Frame을 적......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by bgpark on
+            2022-11-13
+        </p>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -473,30 +501,6 @@ Blocking
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2022/11/02/레거시-알림-서비스-개편/">
-        <h2 class="post-title">
-            레거시 알림 서비스 개편
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            회사 서비스가 중국으로 진출하면서 wechat 서비스를 개발하면서 발생한 이슈에 대해 공유해보려 합니다.
-기존에 알림, AI 모델 변환 요청 등의 요청들은 응답을 기다리지 않고 처리할 수 있는 요청(fire and forget)으로 이벤트 방식으로 처리해왔습니다. Publish/Subscribe 방식의 이벤트를 사용하여 이벤트를 보내는 서비스와 관계없......
-        </div>
-    </a>
-    
-        <p class="post-meta">
-            Posted by bgpark on
-            2022-11-02
-        </p>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -599,6 +603,10 @@ Blocking
     <ul>
       
         <li>
+          <a href="/2022/11/13/Thread/">Thread</a>
+        </li>
+      
+        <li>
           <a href="/2022/11/13/Runnable-Callable/">Runnable-Callable</a>
         </li>
       
@@ -612,10 +620,6 @@ Blocking
       
         <li>
           <a href="/2022/11/12/SQL-Injection/">SQL Injection</a>
-        </li>
-      
-        <li>
-          <a href="/2022/11/08/image-crawler/">이미지 클크롤러 개발기</a>
         </li>
       
     </ul>
