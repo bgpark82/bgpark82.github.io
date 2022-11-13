@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          102. Binary Tree Level Order Traversal - Paak&#39;s Blog
+          Paak&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/">
+    <link rel="canonical" href="https://bgpark82.github.io/archives/10/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('null')
-            /*post*/
+            background-image: url('/img/header_img/home-bg-2-dark.png') 
+            /*config*/
         
     }
     
@@ -87,16 +87,10 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="post-heading">
-                        <div class="tags">
-                            
-                        </div>
-                        <h1>102. Binary Tree Level Order Traversal</h1>
-                        <h2 class="subheading"></h2>
-                        <span class="meta">
-                            Posted by bgpark on
-                            2022-10-03
-                        </span>
+                    <div class="site-heading">
+                        <h1>Paak&#39;s Blog</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading">welcome to earth</span>
                     </div>
                 
 
@@ -199,209 +193,199 @@
 
 
     <!-- Main Content -->
-    <!-- Modify by Yu-Hsuan Yen -->
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
 
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-
-            <!-- Post Container -->
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                <h2><span id="conditions">Conditions</span></h2>
-<hr>
-<ul>
-<li>binary tree</li>
-<li>return <em>the level order traversal of its nodes’ values</em></li>
-<li>from left to right, level by level</li>
-</ul>
-<h2><span id="solve-by-hands-first">Solve by hands first</span></h2>
-<hr>
-<p>we can use BFS algorithm. Time complexity is O(height of node)</p>
-<p>The problem is how to I know the node in queue was in the same level. <strong>The answer is that get the size of current queue which is the node in the same level and iterate in length of curren queue times</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">queue = [<span class="number">1</span>] <span class="comment">// level 0 -&gt; size 1 -&gt; iterate once</span></span><br><span class="line">queue = [<span class="number">2</span>,<span class="number">3</span>] <span class="comment">// level 1 -&gt; size 2 -&gt; iterate twice</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">    <span class="keyword">int</span> len = q.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        TreeNode node = q.poll();        </span><br><span class="line">				q.offer(node.left);</span><br><span class="line">        q.offer(node.right);    </span><br><span class="line">    &#125;            </span><br><span class="line">    ans.addlurn ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6536d54e-02ff-4b64-9ef6-116b55ffe9aa/Untitled.png" alt="Untitled"></p>
-<h2><span id="lesson-i-learnt">Lesson I learnt</span></h2>
-<hr>
-<ol>
-<li>
-<p>Mark the same level in queue</p>
-<ul>
-<li>Iterate length of current queue size times</li>
-</ul>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span>(!q.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = q.size();</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            TreeNode node = q.poll();        </span><br><span class="line">    				q.offer(node.left);</span><br><span class="line">            q.offer(node.right);    </span><br><span class="line">        &#125;            </span><br><span class="line">        ans.add(list);</span><br><span class="line">    &#125;</span><br><span class="line">    ```ist);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2><span id="solution">Solution</span></h2>
-<hr>
-<pre><code class="language-java">class Solution {
-    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
-        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList();
-        
-        if(root == null) return ans;
-        
-        Queue&lt;TreeNode&gt; q = new ArrayDeque();
-        q.offer(root);
-        
-        while(!q.isEmpty()) {
-            int len = q.size();
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
             
-            List&lt;Integer&gt; list = new ArrayList();
-            for(int i = 0; i &lt; len; i++) {
-                TreeNode node = q.poll();
-                list.add(node.val);
-                
-                if(node.left != null) q.offer(node.left);
-                if(node.right != null) q.offer(node.right);    
-            }            
-            ans.add(list);
-        }
-        
-        ret(
-</code></pre>
+                <!-- Main Content -->
 
-                
 
-                <hr>
-                <!-- Pager -->
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2022/10/03/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/" data-toggle="tooltip" data-placement="top" title="105. Construct Binary Tree from Preorder and Inorder Traversal">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/2022/10/03/143-Reorder-List/" data-toggle="tooltip" data-placement="top" title="143. Reorder List">Next Post &rarr;</a>
-                        </li>
-                    
-                </ul>
+<div class="post-preview">
 
-                <!-- duoshuo Share start -->
-                
-                <!-- 多说 Share end-->
-
-                <!-- 多说评论框 start -->
-                
-                <!-- 多说评论框 end -->
-
-                <!-- disqus comment start -->
-                
-                    <div class="comment">
-                        <div id="disqus_thread" class="disqus-thread"></div>
-                    </div>
-                
-                <!-- disqus comment end -->
-            </div>
+    <a href="/2017/03/18/hexo-theme-beantech/">
+        <h2 class="post-title">
+            [Hexo] Theme BeanTech
+        </h2>
+        <h3 class="post-subtitle">
+            This is hexo theme Demo.
+        </h3>
+        <div class="post-content-preview">
             
-            <!-- Tabe of Content -->
-            <!-- Table of Contents -->
+Ported Theme of Hux Blog, Thank Huxpro for designing such a flawless theme.
+This BeanTech theme created by YuHsuan modified from the original Porter Kaijun
 
-    
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
-        
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Conditions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Solve by hands first</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Lesson I learnt</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Solution</span></a></li></ol>
-        
+
+
+
+Usage
+
+I publish the whole project f......
         </div>
-      </aside>
+    </a>
+    
+        <p class="post-meta">
+            Posted by bgpark on
+            2017-03-18
+        </p>
     
 
-                
-            <!-- Sidebar Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
+</div>
+<hr>
 
-                <!-- Featured Tags -->
-                
-                <section>
-                    <!-- no hr -->
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                       
-                    </div>
-                </section>
-                
 
-                <!-- Friends Blog -->
-                
-                <hr>
-                <h5>FRIENDS</h5>
-                <ul class="list-inline">
 
-                    
-                        <li><a href="https://bgpark.tistory.com" target="_blank">Byeonggil Park&#39;s Blog</a></li>
-                    
-                </ul>
+<!-- Pager -->
+
+<ul class="pager">
+    
+        <li class="previous">
+            <a href="/archives/9/">&larr; Newer Posts</a>
+        </li>
+    
+    
+</ul>
+
+
+
+                <!-- 如果开启评论功能 -->
                 
             </div>
-        </div>
+
+          <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+    <!-- no hr -->
+    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+            
+        
+            
+        
+            
+        
     </div>
-</article>
+</section>
 
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about/">ABOUT ME</a></h5>
+    <div class="short-about">
 
+        
+            <img id = "avatar_pic" src="/img/bgpark/profile.jpg" />
+        
 
+        
+            <p>Hi, i&#39;m Peter Park</p>
+        
 
-<!-- disqus embedded js code start (one page only need to embed once) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
-    var disqus_url = "https://bgpark82.github.io/2022/10/03/102-Binary-Tree-Level-Order-Traversal/";
+        <!-- SNS Link -->
+        <ul class="list-inline">
+            
+            
+            
 
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus embedded js code start end -->
+            
 
+            
 
+            
+                <li>
+                    <a target="_blank"  href="https://github.com/bgpark82">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+            
+            
+            
+                <li>
+                    <a target="_blank"  href="https://www.linkedin.com/in/byeonggilpark">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+</section>
+        <hr>
+    
+        
+  <h5>RECENT POSTS</h3>
+  <div class="widget">
+    <ul>
+      
+        <li>
+          <a href="/2022/11/13/Volatile-Synchronized-Atomic/">Volatile-Synchronized-Atomic</a>
+        </li>
+      
+        <li>
+          <a href="/2022/11/13/Thread-Pool/">Thread Pool</a>
+        </li>
+      
+        <li>
+          <a href="/2022/11/12/SQL-Injection/">SQL Injection</a>
+        </li>
+      
+        <li>
+          <a href="/2022/11/08/image-crawler/">이미지 클크롤러 개발기</a>
+        </li>
+      
+        <li>
+          <a href="/2022/11/06/171-Excel-Sheet-Column-Number/">171. Excel Sheet Column Number</a>
+        </li>
+      
+    </ul>
+  </div>
 
+        <hr>
+    
+        <!-- Friends Blog -->
 
-<!-- async load function -->
-<script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script>
-    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'hover',
-          placement: 'left',
-          icon: 'ℬ'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-    })
-</script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
 
+    
+        <li><a href="https://bgpark.tistory.com" target="_blank">Byeonggil Park&#39;s Blog</a></li>
+    
+</ul>
+
+        <hr>
+    
+</div>
+
+        
+    </div>
+</div>
 
 
     <!-- Footer -->
